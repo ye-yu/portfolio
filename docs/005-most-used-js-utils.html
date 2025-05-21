@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<meta name="title" content="raflie.com | My most used JS utils" />
+<meta name="description" content="" />
+<meta name="keywords" content="typescript,programming,javascript,software engineering,array,data structure" />
+<meta name="robots" content="index, follow" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="30 days" />
+<meta name="author" content="Raflie Zainuddin <rafolwen98@gmail.com>" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+  <link rel="stylesheet" href="index.css" />
+  <title>raflie.com | My most used JS utils</title>
+</head>
+
+<style>
+  .header-container {
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-basis: 400px;
+    background: #313131;
+    min-height: 100dvh;
+    min-height: 100vh;
+  }
+
+  .header-content {
+    padding-top: 24px;
+    padding-right: 32px;
+    padding-bottom: 24px;
+    padding-left: 92px;
+  }
+
+  .content-container {
+    flex: 1;
+    height: 100dvh;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #bbb7b7;
+    color: #333;
+  }
+
+  .content-content {
+    padding: 64px 72px;
+    max-width: 700px;
+    margin: auto;
+  }
+
+  .blog-title {
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: 1px;
+  }
+
+  .blog-timestamp {
+    color: #665;
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      flex: 1;
+      background: #313131;
+      min-height: unset;
+      min-height: unset;
+    }
+
+    .header-content {
+      padding: 32px 40px;
+    }
+
+    .content-container {
+      height: unset;
+      height: unset;
+    }
+
+    .content-content {
+      padding: 40px;
+    }
+  }
+</style>
+
+<body>
+  <div class="flex-row md-flex-col">
+    <div class="flex-col header-container">
+      <div class="flex-col header-content" style="gap: 24px">
+        <div style="padding-top: 60px"></div>
+        <div style="letter-spacing: 1px; padding-bottom: 12px">
+          <a
+            href="https://raflie.com/#"
+            style="font-size: 24px; font-weight: 700; color: white"
+            >Raflie Zainuddin</a
+          >
+        </div>
+        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+          Welcome to my page.
+        </div>
+        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+          I am Raflie Zainuddin, and I like experimenting with
+          <span style="color: white; font-weight: 700">JavaScript</span> and
+          <span style="color: white; font-weight: 700">TypeScript</span>.
+        </div>
+        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+          On my website, I enjoy sharing how I leverage functionalities of the
+          programming languages to create useful hacks and tricks. Hopefully,
+          these insights can help you enhance and streamline your own projects.
+        </div>
+
+        <div style="display: flex; margin-top: 32px; gap: 8px">
+          <div style="background-color: #1a1a1a; border-radius: 999px">
+            <a
+              href="https://github.com/ye-yu"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+              "
+            >
+              <svg
+                style="stroke: white"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-github"
+              >
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                ></path>
+              </svg>
+            </a>
+          </div>
+
+          <div style="background-color: white; border-radius: 999px">
+            <a
+              href="https://linkedin.com/in/raflie"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 40px;
+                height: 40px;
+                gap: 8px;
+              "
+            >
+              <svg
+                style="stroke: black"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-linkedin"
+              >
+                <path
+                  d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                ></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-container">
+      <div class="flex-col content-content" style="gap: 40px">
+        <div class="flex-col" name="blog-container" style="gap: 24px">
+  <div class="flex-col" name="blog-header">
+    <div style="padding-bottom: 24px"><a href="index.html">&larr; &nbsp; back</a></div>
+    <div class="blog-title">
+      <span style="padding-right: 8px">
+        <img src="assets/link.svg" alt="link" />
+      </span>
+      <a href="005-most-used-js-utils.html" style="color: #333; font-weight: 700">
+        My most used JS utils
+      </a>
+    </div>
+    <div class="blog-timestamp">2025 May 20 &bull; 5min read time</div>
+  </div>
+  <div class="divider"></div>
+  <div class="flex-col" name="blog-content"><p>I have been working as a software engineer for over 4 years now, doing both backend and frontend. Here are some of my most used JavaScript utilities that I have created and used in my projects. I hope you find them useful too!</p>
+<h1>1. Range iterator</h1>
+<p>Having to use a for loop to iterate over a range of numbers is common in JavaScript. However, using a generator function can make the code cleaner and more readable. The <code>range</code> function below allows you to create an iterator that generates numbers.</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span>* <span class="hljs-title function_">range</span>(<span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Generator</span>&lt;<span class="hljs-built_in">number</span>&gt; {
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+    <span class="hljs-keyword">yield</span> i;
+  }
+}
+</code></pre><p>This is particularly useful in Vue.js when you want to create components with data model array, but you cannot bind the data model item directly to the component. </p>
+<pre><code class="hljs language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+import { range } from &#x27;./utils&#x27;;
+
+const data = ref({
+  items: [1, 2, 3, 4, 5],
+});
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;div v-for=&quot;i in range(5)&quot; :key=&quot;i&quot;&gt;
+      &lt;!-- 
+        this wouldnt work:
+          &lt;input v-model=&quot;data.items[i]&quot; /&gt; 
+
+        do this instead:
+       --&gt;
+
+      &lt;input :value=&quot;data.items[i]&quot; @input=&quot;(event) =&gt; data.items[i] = event.target.value&quot; /&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre><h1>2. Delayed promise</h1>
+<p>When loading async data, sometimes the data arrives too fast and the browser does not update the UI smoothly. To solve this, you can use a delayed promise that waits for a specified amount of time before resolving. In this example, I choose to polifill the <code>Promise</code> class to add a <code>delayed</code> method. </p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">declare</span> <span class="hljs-variable language_">global</span> {
+  <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Promise</span>&lt;T&gt; {
+    <span class="hljs-title function_">delayed</span>(<span class="hljs-attr">ms</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Promise</span>&lt;T&gt;;
+  }
+}
+<span class="hljs-title class_">Promise</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">delayed</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"><span class="hljs-attr">ms</span>: <span class="hljs-built_in">number</span></span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([<span class="hljs-variable language_">this</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> <span class="hljs-built_in">setTimeout</span>(resolve, ms))]).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">[result]</span>) =&gt;</span> result);
+};
+</code></pre><p>This will allow the promise to resolve at least <code>ms</code> milliseconds after the promise is created. You can use this in your code like this:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchData</span>().<span class="hljs-title function_">delayed</span>(<span class="hljs-number">1000</span>);
+</code></pre><p>This will ensure that the data is not loaded too quickly and gives the browser time to update the UI smoothly.</p>
+<h1>3. Chunked array</h1>
+<p>When working with large arrays, it can be useful to split them into smaller chunks. This can help with performance and readability. The <code>chunk</code> function below allows you to create an array of arrays, where each inner array is a chunk of the original array.</p>
+<p>Once more, I choose to polifill the <code>Array</code> class to add a <code>chunk</code> method. </p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">declare</span> <span class="hljs-variable language_">global</span> {
+  <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Array</span>&lt;T&gt; {
+    <span class="hljs-title function_">chunk</span>(<span class="hljs-attr">size</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Generator</span>&lt;<span class="hljs-title class_">Array</span>&lt;T&gt;&gt;;
+  }
+}
+
+<span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">chunk</span> = <span class="hljs-keyword">function</span>* (<span class="hljs-attr">size</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Generator</span>&lt;<span class="hljs-title class_">Array</span>&lt;<span class="hljs-built_in">any</span>&gt;&gt; {
+  <span class="hljs-keyword">let</span> iterated = a;
+  <span class="hljs-keyword">while</span> (iterated.<span class="hljs-property">length</span>) {
+    <span class="hljs-keyword">const</span> chunk = iterated.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, chunkSize);
+    iterated = iterated.<span class="hljs-title function_">slice</span>(chunkSize);
+    <span class="hljs-keyword">yield</span> chunk;
+  }
+};
+</code></pre><h1>4. Rate limit request</h1>
+<p>We can combine the <code>chunk</code> method with the <code>delayed</code> method to create a rate limit request function. This is particularly useful
+when there is a bulk upload request and we are able to split to request into smaller chunks.</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> chunkedAsync&lt;T&gt;(<span class="hljs-attr">data</span>: T[], <span class="hljs-attr">task</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">item</span>: T</span>) =&gt;</span> <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">any</span>[]&gt;, <span class="hljs-attr">chunkSize</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">delay</span>: <span class="hljs-built_in">number</span>) {
+  <span class="hljs-keyword">let</span> <span class="hljs-attr">result</span>: <span class="hljs-built_in">any</span>[] = []
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> chunk <span class="hljs-keyword">of</span> data.<span class="hljs-title function_">chunk</span>(chunkSize)) {
+    <span class="hljs-keyword">const</span> item = <span class="hljs-keyword">await</span> <span class="hljs-title function_">task</span>(item).<span class="hljs-title function_">delayed</span>(delay);
+    result = [...result, ...item];
+  }
+  <span class="hljs-keyword">return</span> result;
+}
+</code></pre></div>
+</div>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"
+/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+<style>
+  .hljs {
+    border-radius: 4px;
+    background-color: #afacac;
+  }
+</style>
