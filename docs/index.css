@@ -181,3 +181,7 @@ code {
   background-color: #aaa;
   padding: 2px;
 }
+
+.width-full {
+  width: 100%;
+}
