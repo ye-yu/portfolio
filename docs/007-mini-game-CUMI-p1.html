@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<meta name="title" content="raflie.com | Mini Game CUMI - Part 1" />
+<meta name="description" content="An overview of the color mixing game where players attempt to match target colors by mixing from a limited palette. In this part 1 discussion - The core challenge of the game and the initial implementation." />
+<meta name="keywords" content="mini game,cumi,game development,programming" />
+<meta name="robots" content="index, follow" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="30 days" />
+<meta name="author" content="Raflie Zainuddin <rafolwen98@gmail.com>" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+  <link rel="stylesheet" href="index.css" />
+  <title>raflie.com | Mini Game CUMI - Part 1</title>
+</head>
+
+<style>
+  .header-container {
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-basis: 400px;
+    background: #313131;
+    min-height: 100dvh;
+    min-height: 100vh;
+  }
+
+  .header-content {
+    padding-top: 24px;
+    padding-right: 32px;
+    padding-bottom: 24px;
+    padding-left: 92px;
+  }
+
+  .content-container {
+    flex: 1;
+    height: 100dvh;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #bbb7b7;
+    color: #333;
+  }
+
+  .content-content {
+    padding: 64px 72px;
+    max-width: 700px;
+    margin: auto;
+  }
+
+  .blog-title {
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: 1px;
+  }
+
+  .blog-timestamp {
+    color: #665;
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      flex: 1;
+      background: #313131;
+      min-height: unset;
+      min-height: unset;
+    }
+
+    .header-content {
+      padding: 32px 40px;
+    }
+
+    .content-container {
+      height: unset;
+      height: unset;
+    }
+
+    .content-content {
+      padding: 40px;
+    }
+  }
+</style>
+
+<body>
+  <div class="flex-row md-flex-col width-full">
+    <div class="flex-col header-container">
+      <div class="flex-col header-content" style="gap: 24px">
+        <div style="padding-top: 60px"></div>
+        <div style="letter-spacing: 1px; padding-bottom: 12px">
+          <a
+            href="https://raflie.com/#"
+            style="font-size: 24px; font-weight: 700; color: white"
+            >Raflie Zainuddin</a
+          >
+        </div>
+        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+          Welcome to my page.
+        </div>
+        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+          I am Raflie Zainuddin, and I like experimenting with
+          <span style="color: white; font-weight: 700">JavaScript</span> and
+          <span style="color: white; font-weight: 700">TypeScript</span>.
+        </div>
+        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+          On my website, I enjoy sharing how I leverage functionalities of the
+          programming languages to create useful hacks and tricks. Hopefully,
+          these insights can help you enhance and streamline your own projects.
+        </div>
+
+        <div style="display: flex; margin-top: 32px; gap: 8px">
+          <div style="background-color: #1a1a1a; border-radius: 999px">
+            <a
+              href="https://github.com/ye-yu"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+              "
+            >
+              <svg
+                style="stroke: white"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-github"
+              >
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                ></path>
+              </svg>
+            </a>
+          </div>
+
+          <div style="background-color: white; border-radius: 999px">
+            <a
+              href="https://linkedin.com/in/raflie"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 40px;
+                height: 40px;
+                gap: 8px;
+              "
+            >
+              <svg
+                style="stroke: black"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-linkedin"
+              >
+                <path
+                  d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                ></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-container">
+      <div class="flex-col content-content" style="gap: 40px">
+        <div class="flex-col" name="blog-container" style="gap: 24px">
+  <div class="flex-col" name="blog-header">
+    <div style="padding-bottom: 24px"><a href="index.html">&larr; &nbsp; back</a></div>
+    <div class="blog-title">
+      <span style="padding-right: 8px">
+        <img src="assets/link.svg" alt="link" />
+      </span>
+      <a href="007-mini-game-CUMI-p1.html" style="color: #333; font-weight: 700">
+        Mini Game CUMI - Part 1
+      </a>
+    </div>
+    <div class="blog-timestamp">2026 Feb 20 &bull; 5min read time</div>
+  </div>
+  <div class="divider"></div>
+  <div class="flex-col" name="blog-content"><h1>Building a Daily Color Mixing Game: A Technical Deep Dive</h1>
+<h2>Introduction</h2>
+<p>Welcome to a case study of <strong>CUMI (Can You Mix It?)</strong>, a web-based color mixing game where players attempt to match target colors by mixing from a limited palette. Check out the game at:</p>
+<p><a href="/cumi">CUMI</a></p>
+<p>In this post, I&#39;ll walk through the technical decisions and implementations that brought this game to life—from color science fundamentals to modern web APIs.</p>
+<p>In this part 1 discussion - The core challenge: <strong>How do you build a game that accurately measures color perception?</strong></p>
+<hr>
+<h2>Chapter 1: Understanding Color—Real World vs Digital</h2>
+<h3>The Problem with RGB</h3>
+<p>Most developers are familiar with the RGB (Red, Green, Blue) color model. It&#39;s intuitive: combine three light channels and you get any color on a screen. However, RGB was designed for <em>how screens display colors</em>, not for <em>how humans perceive them</em>.</p>
+<p>Consider two colors:</p>
+<ul>
+<li><strong>Color A</strong>: RGB(255, 0, 0) - Pure red</li>
+<li><strong>Color B</strong>: RGB(255, 1, 1) - Nearly pure red, slightly warmer</li>
+</ul>
+<p>In RGB space, these colors are only <strong>1 unit apart</strong> out of 255 (0.4% difference). To the human eye, however, they&#39;re virtually indistinguishable.</p>
+<p>Now consider:</p>
+<ul>
+<li><strong>Color C</strong>: RGB(100, 0, 0) - Dark red</li>
+<li><strong>Color D</strong>: RGB(100, 50, 50) - Light brownish red</li>
+</ul>
+<p>These are also about the same RGB distance, but they look <em>dramatically</em> different to humans because they differ significantly in brightness and saturation.</p>
+<p>This disconnect between digital representation and human perception is the root issue we needed to solve.</p>
+<h3>Introducing CIELAB: Perceptual Color Space</h3>
+<p>The solution exists in the <strong>CIELAB color space</strong>, a color model designed explicitly to match human color perception. Developed by the International Commission on Illumination (CIE), CIELAB has three dimensions:</p>
+<ul>
+<li><strong>L</strong>* (Lightness): Ranges from 0 (black) to 100 (white), matching human brightness perception</li>
+<li><strong>a</strong>* (Color opponent): Ranges from green (-) to red (+)</li>
+<li><strong>b</strong>* (Color opponent): Ranges from blue (-) to yellow (+)</li>
+</ul>
+<p>The genius of CIELAB is that distances between colors in this space correspond approximately to how different those colors <em>look</em> to human eyes.</p>
+<h3>Converting RGB to CIELAB</h3>
+<p>The conversion involves two steps:</p>
+<ol>
+<li><strong>RGB → Linear RGB</strong>: Account for gamma correction (how screens intensify color values)</li>
+<li><strong>Linear RGB → XYZ</strong>: Convert to the CIE XYZ intermediate space using standardized color matrices</li>
+<li><strong>XYZ → CIELAB</strong>: Apply the LAB transformation with reference white point adjustments</li>
+</ol>
+<p>Here&#39;s how we implemented it in our utility:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">rgb2lab</span>(<span class="hljs-params"><span class="hljs-attr">rgb</span>: RGB</span>): <span class="hljs-variable constant_">LAB</span> {
+  <span class="hljs-comment">// Step 1: Normalize RGB to 0-1 range and remove gamma correction</span>
+  <span class="hljs-keyword">let</span> r = rgb.<span class="hljs-property">r</span> / <span class="hljs-number">255</span>;
+  <span class="hljs-keyword">let</span> g = rgb.<span class="hljs-property">g</span> / <span class="hljs-number">255</span>;
+  <span class="hljs-keyword">let</span> b = rgb.<span class="hljs-property">b</span> / <span class="hljs-number">255</span>;
+
+  r = (r &gt; <span class="hljs-number">0.04045</span>) ? <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">pow</span>((r + <span class="hljs-number">0.055</span>) / <span class="hljs-number">1.055</span>, <span class="hljs-number">2.4</span>) : r / <span class="hljs-number">12.92</span>;
+  g = (g &gt; <span class="hljs-number">0.04045</span>) ? <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">pow</span>((g + <span class="hljs-number">0.055</span>) / <span class="hljs-number">1.055</span>, <span class="hljs-number">2.4</span>) : g / <span class="hljs-number">12.92</span>;
+  b = (b &gt; <span class="hljs-number">0.04045</span>) ? <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">pow</span>((b + <span class="hljs-number">0.055</span>) / <span class="hljs-number">1.055</span>, <span class="hljs-number">2.4</span>) : b / <span class="hljs-number">12.92</span>;
+
+  <span class="hljs-comment">// Step 2: Convert to XYZ using standard color matrices</span>
+  <span class="hljs-keyword">let</span> x = (r * <span class="hljs-number">0.4124</span> + g * <span class="hljs-number">0.3576</span> + b * <span class="hljs-number">0.1805</span>) / <span class="hljs-number">0.95047</span>;
+  <span class="hljs-keyword">let</span> y = (r * <span class="hljs-number">0.2126</span> + g * <span class="hljs-number">0.7152</span> + b * <span class="hljs-number">0.0722</span>) / <span class="hljs-number">1.00000</span>;
+  <span class="hljs-keyword">let</span> z = (r * <span class="hljs-number">0.0193</span> + g * <span class="hljs-number">0.1192</span> + b * <span class="hljs-number">0.9505</span>) / <span class="hljs-number">1.08883</span>;
+
+  <span class="hljs-comment">// Step 3: Convert XYZ to LAB</span>
+  x = (x &gt; <span class="hljs-number">0.008856</span>) ? <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">pow</span>(x, <span class="hljs-number">1</span> / <span class="hljs-number">3</span>) : (<span class="hljs-number">7.787</span> * x) + <span class="hljs-number">16</span> / <span class="hljs-number">116</span>;
+  y = (y &gt; <span class="hljs-number">0.008856</span>) ? <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">pow</span>(y, <span class="hljs-number">1</span> / <span class="hljs-number">3</span>) : (<span class="hljs-number">7.787</span> * y) + <span class="hljs-number">16</span> / <span class="hljs-number">116</span>;
+  z = (z &gt; <span class="hljs-number">0.008856</span>) ? <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">pow</span>(z, <span class="hljs-number">1</span> / <span class="hljs-number">3</span>) : (<span class="hljs-number">7.787</span> * z) + <span class="hljs-number">16</span> / <span class="hljs-number">116</span>;
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">l</span>: (<span class="hljs-number">116</span> * y) - <span class="hljs-number">16</span>,
+    <span class="hljs-attr">a</span>: <span class="hljs-number">500</span> * (x - y),
+    <span class="hljs-attr">b</span>: <span class="hljs-number">200</span> * (y - z),
+  }
+}
+</code></pre><p>The reverse conversion (LAB → RGB) uses similar logic with inverse transformations.</p>
+<hr>
+<h2>Chapter 2: Quantifying Color Match—The Perceptual Distance Metric</h2>
+<h3>Initial Attempts: Naive Euclidean Distance</h3>
+<p>When we first tried measuring color similarity, we calculated the straight-line distance between two colors in LAB space and mapped it to a percentage:</p>
+<pre><code>similarity = max(0, min(100, 100 - distance))
+</code></pre><p>This seemed reasonable in theory. But testing revealed a problem: colors that <em>looked</em> nearly identical were scoring as low as 70-80% matches, while colors with subtle differences were scoring 95%+. Our visual perception wasn&#39;t matching the math.</p>
+<h3>The CIE94 Delta E Formula</h3>
+<p>The solution came from the <strong>CIE94 color difference formula</strong>, a weighted distance calculation that accounts for how human perception varies across different regions of color space:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">deltaE</span>(<span class="hljs-params"><span class="hljs-attr">labA</span>: LAB, <span class="hljs-attr">labB</span>: LAB</span>) {
+  <span class="hljs-keyword">const</span> deltaL = labA.<span class="hljs-property">l</span> - labB.<span class="hljs-property">l</span>;
+  <span class="hljs-keyword">const</span> deltaA = labA.<span class="hljs-property">a</span> - labB.<span class="hljs-property">a</span>;
+  <span class="hljs-keyword">const</span> deltaB = labA.<span class="hljs-property">b</span> - labB.<span class="hljs-property">b</span>;
+  
+  <span class="hljs-comment">// Chroma (saturation) components in CIELAB space</span>
+  <span class="hljs-keyword">const</span> c1 = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sqrt</span>(labA.<span class="hljs-property">a</span> * labA.<span class="hljs-property">a</span> + labA.<span class="hljs-property">b</span> * labA.<span class="hljs-property">b</span>);
+  <span class="hljs-keyword">const</span> c2 = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sqrt</span>(labB.<span class="hljs-property">a</span> * labB.<span class="hljs-property">a</span> + labB.<span class="hljs-property">b</span> * labB.<span class="hljs-property">b</span>);
+  <span class="hljs-keyword">const</span> deltaC = c1 - c2;
+  
+  <span class="hljs-comment">// Compute the hue component</span>
+  <span class="hljs-keyword">let</span> deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
+  deltaH = deltaH &lt; <span class="hljs-number">0</span> ? <span class="hljs-number">0</span> : <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sqrt</span>(deltaH);
+  
+  <span class="hljs-comment">// Apply weighting factors (humans are less sensitive to lightness than color)</span>
+  <span class="hljs-keyword">const</span> sc = <span class="hljs-number">1.0</span> + <span class="hljs-number">0.045</span> * c1;
+  <span class="hljs-keyword">const</span> sh = <span class="hljs-number">1.0</span> + <span class="hljs-number">0.015</span> * c1;
+  
+  <span class="hljs-comment">// Normalize differences</span>
+  <span class="hljs-keyword">const</span> deltaLKlsl = deltaL / (<span class="hljs-number">1.0</span>);
+  <span class="hljs-keyword">const</span> deltaCkcsc = deltaC / (sc);
+  <span class="hljs-keyword">const</span> deltaHkhsh = deltaH / (sh);
+  
+  <span class="hljs-comment">// Combine into single metric</span>
+  <span class="hljs-keyword">const</span> i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
+  <span class="hljs-keyword">return</span> i &lt; <span class="hljs-number">0</span> ? <span class="hljs-number">0</span> : <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sqrt</span>(i);
+}
+</code></pre><p>The key insight: The formula applies <strong>different weight</strong> to lightness, chroma (saturation), and hue differences because humans don&#39;t perceive changes equally across these dimensions.</p>
+<h3>Mapping Delta E to Percentage</h3>
+<p>The Delta E value now needs to be converted to a user-friendly 0-100% similarity score. We use an exponential decay function:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">perceptualSimilarity</span>(<span class="hljs-params"><span class="hljs-attr">deltaE</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+  <span class="hljs-keyword">const</span> similarity = <span class="hljs-number">100</span> * <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">exp</span>(-deltaE / <span class="hljs-number">20</span>);
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(<span class="hljs-number">0</span>, <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(<span class="hljs-number">100</span>, similarity));
+}
+</code></pre><p>The constant <code>20</code> is tuned to create the right feel: </p>
+<ul>
+<li>deltaE ≈ 0 → ~100% similarity</li>
+<li>deltaE ≈ 10 → ~61% similarity  </li>
+<li>deltaE ≈ 20 → ~37% similarity</li>
+<li>deltaE &gt; 40 → approaching 0%</li>
+</ul>
+<p>This exponential mapping means the game is harder than it looks—the last few percentage points are genuinely challenging!</p>
+<h3>Putting It Together</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">compareSimilarity</span>(<span class="hljs-params"><span class="hljs-attr">left</span>: RGB, <span class="hljs-attr">right</span>: RGB</span>) {
+  <span class="hljs-keyword">const</span> leftLAB = <span class="hljs-title function_">rgb2lab</span>(left)
+  <span class="hljs-keyword">const</span> rightLAB = <span class="hljs-title function_">rgb2lab</span>(right)
+  <span class="hljs-keyword">const</span> delta = <span class="hljs-title function_">deltaE</span>(leftLAB, rightLAB)
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">perceptualSimilarity</span>(delta)
+}
+</code></pre><p>The result: A similarity metric that actually matches human color perception. When a color reads as 99% similar on screen, it genuinely looks nearly identical in real life.</p>
+<hr>
+<h2>Chapter 3: Mixing Colors—Current Approach and Future Challenges</h2>
+<h3>Simple RGB Averaging</h3>
+<p>Our current implementation uses the simplest possible mixing algorithm: average the RGB values of selected colors.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">mixColors</span>(<span class="hljs-params"><span class="hljs-attr">rgbs</span>: RGB[]</span>): <span class="hljs-variable constant_">RGB</span> {
+  <span class="hljs-keyword">if</span> (!rgbs || rgbs.<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`Empty colors`</span>);
+  }
+
+  <span class="hljs-keyword">let</span> totalR = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">let</span> totalG = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">let</span> totalB = <span class="hljs-number">0</span>;
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> rgb <span class="hljs-keyword">of</span> rgbs) {
+    totalR += rgb.<span class="hljs-property">r</span>;
+    totalG += rgb.<span class="hljs-property">g</span>;
+    totalB += rgb.<span class="hljs-property">b</span>;
+  }
+
+  <span class="hljs-keyword">const</span> averageR = totalR / rgbs.<span class="hljs-property">length</span>;
+  <span class="hljs-keyword">const</span> averageG = totalG / rgbs.<span class="hljs-property">length</span>;
+  <span class="hljs-keyword">const</span> averageB = totalB / rgbs.<span class="hljs-property">length</span>;
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">r</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(<span class="hljs-number">255</span>, <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(averageR)),
+    <span class="hljs-attr">g</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(<span class="hljs-number">255</span>, <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(averageG)),
+    <span class="hljs-attr">b</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(<span class="hljs-number">255</span>, <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(averageB)),
+  };
+}
+</code></pre><h3>Available Palettes</h3>
+<p>We provide two palette options:</p>
+<p><strong>Standard RGB + Black/White:</strong></p>
+<ul>
+<li>Red (255, 0, 0)</li>
+<li>Green (0, 255, 0)</li>
+<li>Blue (0, 0, 255)</li>
+<li>Black (0, 0, 0)</li>
+<li>White (255, 255, 255)</li>
+</ul>
+<p><strong>Cyan, Yellow, Magenta + Black/White:</strong></p>
+<ul>
+<li>Cyan (0, 255, 255)</li>
+<li>Yellow (255, 255, 0)</li>
+<li>Magenta (255, 0, 255)</li>
+<li>Black (0, 0, 0)</li>
+<li>White (255, 255, 255)</li>
+</ul>
+<h3>Known Limitation: Strong Color Mixing</h3>
+<p>The RGB averaging approach has a significant weakness: <strong>mixing strong colors like black and white</strong>.</p>
+<p>Example:</p>
+<ul>
+<li>Mix: [Black (0,0,0), White (255,255,255)]</li>
+<li>RGB Average Result: (127.5, 127.5, 127.5) → Medium Gray</li>
+<li>Problem: You can&#39;t actually achieve true black or pure white through averaging; they desaturate into gray.</li>
+</ul>
+<p>In the real world, mixing black paint with white paint gives gray. But digitally, if you wanted to:</p>
+<ul>
+<li>Darken a red → Mix with black, but you get grayish-red instead of deep red</li>
+<li>Lighten a color → Mix with white, but you get pastel washed-out versions</li>
+</ul>
+<h3>Future Enhancement Ideas</h3>
+<p>For a future version, consider implementing:</p>
+<ol>
+<li><strong>HSL/HSV Mixing</strong>: Blend by hue, saturation, and lightness separately for more intuitive results</li>
+<li><strong>Subtractive Color Mixing</strong>: Simulate actual paint mixing (CMY model behaves more like real-world paint)</li>
+<li><strong>Perceptual Mixing in LAB Space</strong>: Average colors in LAB space instead of RGB to get more natural results</li>
+<li><strong>Weighted Mixing</strong>: Allow players to use different amounts of each color (e.g., 2 parts red, 1 part white)</li>
+</ol>
+</div>
+</div>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"
+/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+<style>
+  .hljs {
+    border-radius: 4px;
+    background-color: #afacac;
+  }
+</style>

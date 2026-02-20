@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+
+<meta name="title" content="raflie.com | Mini Game CUMI - Part 1" />
+<meta name="description" content="An overview of the color mixing game where players attempt to match target colors by mixing from a limited palette. In this part 1 discussion - The core challenge of the game and the initial implementation." />
+<meta name="keywords" content="mini game,cumi,game development,programming" />
+<meta name="robots" content="index, follow" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="30 days" />
+<meta name="author" content="Raflie Zainuddin <rafolwen98@gmail.com>" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+  <link rel="stylesheet" href="index.css" />
+  <title>raflie.com | Mini Game CUMI - Part 1</title>
+</head>
+
+<style>
+  .header-container {
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-basis: 400px;
+    background: #313131;
+    min-height: 100dvh;
+    min-height: 100vh;
+  }
+
+  .header-content {
+    padding-top: 24px;
+    padding-right: 32px;
+    padding-bottom: 24px;
+    padding-left: 92px;
+  }
+
+  .content-container {
+    flex: 1;
+    height: 100dvh;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #bbb7b7;
+    color: #333;
+  }
+
+  .content-content {
+    padding: 64px 72px;
+    max-width: 700px;
+    margin: auto;
+  }
+
+  .blog-title {
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: 1px;
+  }
+
+  .blog-timestamp {
+    color: #665;
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      flex: 1;
+      background: #313131;
+      min-height: unset;
+      min-height: unset;
+    }
+
+    .header-content {
+      padding: 32px 40px;
+    }
+
+    .content-container {
+      height: unset;
+      height: unset;
+    }
+
+    .content-content {
+      padding: 40px;
+    }
+  }
+</style>
+
+<body>
+  <div class="flex-row md-flex-col width-full">
+    <div class="flex-col header-container">
+      <div class="flex-col header-content" style="gap: 24px">
+        <div style="padding-top: 60px"></div>
+        <div style="letter-spacing: 1px; padding-bottom: 12px">
+          <a
+            href="https://raflie.com/#"
+            style="font-size: 24px; font-weight: 700; color: white"
+            >Raflie Zainuddin</a
+          >
+        </div>
+        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+          Welcome to my page.
+        </div>
+        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+          I am Raflie Zainuddin, and I like experimenting with
+          <span style="color: white; font-weight: 700">JavaScript</span> and
+          <span style="color: white; font-weight: 700">TypeScript</span>.
+        </div>
+        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+          On my website, I enjoy sharing how I leverage functionalities of the
+          programming languages to create useful hacks and tricks. Hopefully,
+          these insights can help you enhance and streamline your own projects.
+        </div>
+
+        <div style="display: flex; margin-top: 32px; gap: 8px">
+          <div style="background-color: #1a1a1a; border-radius: 999px">
+            <a
+              href="https://github.com/ye-yu"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+              "
+            >
+              <svg
+                style="stroke: white"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-github"
+              >
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                ></path>
+              </svg>
+            </a>
+          </div>
+
+          <div style="background-color: white; border-radius: 999px">
+            <a
+              href="https://linkedin.com/in/raflie"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 40px;
+                height: 40px;
+                gap: 8px;
+              "
+            >
+              <svg
+                style="stroke: black"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-linkedin"
+              >
+                <path
+                  d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                ></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-container">
+      <div class="flex-col content-content" style="gap: 40px">
+        <div class="flex-col" name="blog-container" style="gap: 24px">
+  <div class="flex-col" name="blog-header">
+    <div style="padding-bottom: 24px"><a href="index.html">&larr; &nbsp; back</a></div>
+    <div class="blog-title">
+      <span style="padding-right: 8px">
+        <img src="assets/link.svg" alt="link" />
+      </span>
+      <a href="008-mini-game-CUMI-p2.html" style="color: #333; font-weight: 700">
+        Mini Game CUMI - Part 1
+      </a>
+    </div>
+    <div class="blog-timestamp">2026 Feb 20 &bull; 5min read time</div>
+  </div>
+  <div class="divider"></div>
+  <div class="flex-col" name="blog-content"><h1>Building a Daily Color Mixing Game: A Technical Deep Dive</h1>
+<h2>Introduction</h2>
+<p>Welcome to part 2 of a case study of <strong>CUMI (Can You Mix It?)</strong>, a web-based color mixing game where players attempt to match target colors by mixing from a limited palette. Check out the game at:</p>
+<p><a href="/cumi">CUMI</a></p>
+<p>In this post, I&#39;ll walk through the technical decisions and implementations that brought this game to life—from color science fundamentals to modern web APIs.</p>
+<p>In this part 2 discussion - The gameplay challenge: <strong>How do you build a game that generates daily unique puzzles and persists game state across sessions?</strong></p>
+<hr>
+<h2>Chapter 4: Daily Challenges—Seeded Random Number Generation</h2>
+<h3>The Challenge</h3>
+<p>In a typical puzzle game, you want:</p>
+<ul>
+<li>✅ Players to see the same puzzle on the same day (fairness + sharable results)</li>
+<li>✅ Different puzzle every day</li>
+<li>✅ Randomization for variety</li>
+</ul>
+<p>JavaScript has no built-in seeded random function—<code>Math.random()</code> is unseeded and non-deterministic. Calling it twice in a row gives different results.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-comment">// JavaScript&#x27;s default randomness is unseeded</span>
+<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() <span class="hljs-comment">// 0.123...</span>
+<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() <span class="hljs-comment">// 0.456... (different!)</span>
+</code></pre><h3>Solution: Linear Congruential Generator</h3>
+<p>We implemented a <strong>Linear Congruential Generator (LCG)</strong>, a classic algorithm for deterministic pseudo-random numbers. Given the same seed, it always produces the same sequence:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SeededRandom</span> {
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">seed</span>: <span class="hljs-built_in">number</span>;
+
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-attr">seed</span>: <span class="hljs-built_in">number</span></span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">seed</span> = seed;
+  }
+
+  <span class="hljs-comment">// LCG formula: next_seed = (a * seed + c) mod m</span>
+  <span class="hljs-comment">// These constants are well-established for good randomness properties</span>
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">nextSeed</span>(): <span class="hljs-built_in">number</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">seed</span> = (<span class="hljs-variable language_">this</span>.<span class="hljs-property">seed</span> * <span class="hljs-number">1664525</span> + <span class="hljs-number">1013904223</span>) % <span class="hljs-title class_">Number</span>.<span class="hljs-property">MAX_SAFE_INTEGER</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">seed</span>;
+  }
+
+  <span class="hljs-title function_">random</span>(): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">nextSeed</span>() / <span class="hljs-title class_">Number</span>.<span class="hljs-property">MAX_SAFE_INTEGER</span>;
+  }
+
+  <span class="hljs-title function_">nextInt</span>(<span class="hljs-attr">min</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">max</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">const</span> range = max - min;
+    <span class="hljs-keyword">if</span> (range &lt;= <span class="hljs-number">0</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Invalid range for nextInt: max must be greater than min.&quot;</span>);
+    }
+    <span class="hljs-keyword">return</span> min + <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">random</span>() * range);
+  }
+
+  nextItem&lt;T&gt;(<span class="hljs-attr">array</span>: T[]): T {
+    <span class="hljs-keyword">const</span> index = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">nextInt</span>(<span class="hljs-number">0</span>, array.<span class="hljs-property">length</span>)
+    <span class="hljs-keyword">return</span> array[index]
+  }
+}
+</code></pre><p><strong>How it works:</strong></p>
+<ol>
+<li>Start with a seed value</li>
+<li>Apply the formula: <code>next = (1664525 * current + 1013904223) % MAX_SAFE_INTEGER</code></li>
+<li>Each call to <code>random()</code> advances the seed and returns a normalized value</li>
+<li>The same seed always produces the same sequence</li>
+</ol>
+<h3>Generating Daily Puzzles</h3>
+<p>To create a daily puzzle, we generate a seed from the current date:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">generateColorPuzzle</span> = (<span class="hljs-params"><span class="hljs-attr">date</span>: <span class="hljs-title class_">Date</span></span>) =&gt; {
+  <span class="hljs-comment">// Create a deterministic seed from the date</span>
+  <span class="hljs-keyword">const</span> seed = [
+    <span class="hljs-string">&#x27;en-GB&#x27;</span>,              <span class="hljs-comment">// Locale string (ensures consistency)</span>
+    date.<span class="hljs-title function_">getDate</span>(),       <span class="hljs-comment">// Day of month (1-31)</span>
+    date.<span class="hljs-title function_">getMonth</span>(),      <span class="hljs-comment">// Month (0-11)</span>
+    date.<span class="hljs-title function_">getFullYear</span>(),   <span class="hljs-comment">// Year (e.g., 2026)</span>
+  ].<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27;&#x27;</span>)
+
+  <span class="hljs-comment">// Two-stage random generation for better mixing</span>
+  <span class="hljs-keyword">const</span> seedToRandom = <span class="hljs-title function_">seededRandom</span>(seed)
+  seedToRandom.<span class="hljs-title function_">random</span>()  <span class="hljs-comment">// Advance the seed once</span>
+  <span class="hljs-keyword">const</span> random = <span class="hljs-title function_">seededRandom</span>(seedToRandom.<span class="hljs-title function_">random</span>() * <span class="hljs-title class_">Number</span>.<span class="hljs-property">MAX_SAFE_INTEGER</span>)
+
+  <span class="hljs-comment">// Randomly decide how many colors to mix</span>
+  <span class="hljs-keyword">const</span> minMix = <span class="hljs-number">4</span>
+  <span class="hljs-keyword">const</span> maxMix = <span class="hljs-number">12</span>
+  <span class="hljs-keyword">const</span> mixCount = random.<span class="hljs-title function_">nextInt</span>(minMix, maxMix)
+
+  <span class="hljs-comment">// Pick a random palette</span>
+  <span class="hljs-keyword">const</span> palettes = <span class="hljs-title function_">useActivePalette</span>().<span class="hljs-property">palettes</span>;
+  <span class="hljs-keyword">const</span> palette = random.<span class="hljs-title function_">nextItem</span>(palettes);
+
+  <span class="hljs-comment">// Select random colors from that palette</span>
+  <span class="hljs-keyword">const</span> paletteMixes = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>({ <span class="hljs-attr">length</span>: mixCount }).<span class="hljs-title function_">map</span>(<span class="hljs-function">() =&gt;</span> random.<span class="hljs-title function_">nextItem</span>(palette.<span class="hljs-property">palettes</span>))
+  <span class="hljs-keyword">const</span> mixes = paletteMixes.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> e.<span class="hljs-property">value</span>)
+  
+  <span class="hljs-keyword">const</span> paletteCount = paletteMixes.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> {
+    a[b.<span class="hljs-property">name</span>] ??= <span class="hljs-number">0</span>
+    a[b.<span class="hljs-property">name</span>] += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> a
+  }, {} <span class="hljs-keyword">as</span> <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">number</span>&gt;)
+
+  <span class="hljs-keyword">return</span> {
+    palette,
+    paletteCount,
+    mixes,
+  }
+}
+</code></pre><p><strong>Example:</strong></p>
+<ul>
+<li>Today: February 20, 2026</li>
+<li>Seed: <code>&#39;en-GB2019125&#39;</code> (concatenation of locale, day 20, month 1, year 2026)</li>
+<li>This seed consistently produces the same puzzle throughout the day</li>
+<li>Tomorrow: February 21, 2026</li>
+<li>Seed: <code>&#39;en-GB2119125&#39;</code> (day increments to 21)</li>
+<li>Completely different puzzle, but still deterministic</li>
+</ul>
+<h3>Why This Matters</h3>
+<p>This approach enables:</p>
+<ul>
+<li><strong>Fairness</strong>: Everyone gets the same puzzle on the same day</li>
+<li><strong>Shareability</strong>: Players can compare results using the date as reference</li>
+<li><strong>Variety</strong>: A different puzzle every single day</li>
+<li><strong>No server needed</strong>: Puzzles are generated client-side from the date</li>
+</ul>
+<hr>
+<h2>Chapter 5: Game History—Persisting State with Local Storage</h2>
+<h3>The Problem</h3>
+<p>When users play and come back later, they expect:</p>
+<ol>
+<li>Today&#39;s mix state to be saved</li>
+<li>Yesterday&#39;s result to be retrievable</li>
+<li>Everything to work even without a backend</li>
+</ol>
+<h3>The Solution: Local Storage + Type-Safe Wrappers</h3>
+<p>We built a wrapper around the browser&#39;s <code>localStorage</code> API with TypeScript support:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">TaggedString</span>&lt;<span class="hljs-title class_">Data</span>&gt; = <span class="hljs-built_in">string</span> &amp; { <span class="hljs-attr">_type</span>: <span class="hljs-title class_">Data</span> }
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> tagString&lt;<span class="hljs-title class_">Data</span>&gt;(<span class="hljs-attr">s</span>: <span class="hljs-built_in">string</span>) {
+  <span class="hljs-keyword">return</span> s <span class="hljs-keyword">as</span> <span class="hljs-title class_">TaggedString</span>&lt;<span class="hljs-title class_">Data</span>&gt;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useLocalStorage</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">function</span> get&lt;T&gt;(<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">transformer</span>: { <span class="hljs-title function_">new</span>(<span class="hljs-attr">data</span>: <span class="hljs-built_in">never</span> | <span class="hljs-literal">null</span>): T }): T
+  <span class="hljs-keyword">function</span> get&lt;<span class="hljs-title class_">Data</span>&gt;(<span class="hljs-attr">key</span>: <span class="hljs-title class_">TaggedString</span>&lt;<span class="hljs-title class_">Data</span>&gt;): <span class="hljs-title class_">Data</span> | <span class="hljs-literal">null</span>
+  <span class="hljs-keyword">function</span> get&lt;T&gt;(<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>, transformer?: { <span class="hljs-title function_">new</span>(<span class="hljs-attr">data</span>: <span class="hljs-built_in">never</span> | <span class="hljs-literal">null</span>): T }): T | <span class="hljs-literal">null</span> {
+    <span class="hljs-keyword">const</span> value = <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(key)
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">const</span> parsed = value ? <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(value) : <span class="hljs-literal">null</span>
+      <span class="hljs-keyword">return</span> transformer ? <span class="hljs-keyword">new</span> <span class="hljs-title function_">transformer</span>(parsed <span class="hljs-keyword">as</span> <span class="hljs-built_in">never</span>) : parsed;
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;useLocalStorage error&quot;</span>, error)
+      <span class="hljs-keyword">return</span> transformer ? <span class="hljs-keyword">new</span> <span class="hljs-title function_">transformer</span>(<span class="hljs-literal">null</span>) : <span class="hljs-literal">null</span>;
+    }
+  }
+
+  <span class="hljs-keyword">function</span> set&lt;T&gt;(<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">value</span>: T) {
+    <span class="hljs-keyword">const</span> stringified = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(value)
+    <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">setItem</span>(key, stringified)
+  }
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">del</span>(<span class="hljs-params"><span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span></span>) {
+    <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">removeItem</span>(key);
+  }
+  
+  <span class="hljs-keyword">return</span> { get, set, del }
+}
+</code></pre><h3>Storing Mix History</h3>
+<p>Each day&#39;s mix is stored with a date-based key:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useMixHistory</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> <span class="hljs-variable language_">localStorage</span> = <span class="hljs-title function_">useLocalStorage</span>()
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">generateKeyFromDate</span>(<span class="hljs-params"><span class="hljs-attr">date</span>: <span class="hljs-title class_">Date</span></span>) {
+    <span class="hljs-keyword">const</span> key = [
+      <span class="hljs-string">&#x27;mix-history&#x27;</span>,
+      date.<span class="hljs-title function_">getDate</span>(),      <span class="hljs-comment">// Day</span>
+      date.<span class="hljs-title function_">getMonth</span>(),     <span class="hljs-comment">// Month</span>
+      date.<span class="hljs-title function_">getFullYear</span>(),  <span class="hljs-comment">// Year</span>
+    ].<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27;:&#x27;</span>)
+    <span class="hljs-keyword">return</span> tagString&lt;<span class="hljs-title class_">MixHistory</span>&gt;(key)
+  }
+
+  <span class="hljs-keyword">const</span> todaysKey = <span class="hljs-title function_">generateKeyFromDate</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>())
+  
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-title function_">saveTodaysMix</span>(<span class="hljs-params"><span class="hljs-attr">mixes</span>: <span class="hljs-title class_">Mixes</span>, <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span></span>) {
+      <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">set</span>(todaysKey, {
+        <span class="hljs-attr">name</span>: name,
+        mixes,
+      })
+    },
+    <span class="hljs-keyword">get</span> <span class="hljs-title function_">todaysMix</span>() {
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">get</span>(todaysKey)
+    },
+    <span class="hljs-keyword">get</span> <span class="hljs-title function_">yesterdaysMix</span>() {
+      <span class="hljs-keyword">const</span> date = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>
+      date.<span class="hljs-title function_">setDate</span>(date.<span class="hljs-title function_">getDate</span>() - <span class="hljs-number">1</span>)
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">get</span>(<span class="hljs-title function_">generateKeyFromDate</span>(date))
+    },
+  }
+}
+</code></pre><h3>Auto-Saving During Gameplay</h3>
+<p>The mix state is saved every time the player modifies it:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useActivePalette</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> mixHistory = <span class="hljs-title function_">useMixHistory</span>()
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-title function_">addMix</span>(<span class="hljs-params"><span class="hljs-attr">palette</span>: <span class="hljs-title class_">PaletteItem</span></span>) {
+      activeMix.<span class="hljs-property">value</span>[palette.<span class="hljs-property">name</span>] ??= <span class="hljs-number">0</span>
+      activeMix.<span class="hljs-property">value</span>[palette.<span class="hljs-property">name</span>] += <span class="hljs-number">1</span>
+      <span class="hljs-comment">// Save immediately after every change</span>
+      mixHistory.<span class="hljs-title function_">saveTodaysMix</span>(activeMix.<span class="hljs-property">value</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">activePalette</span>.<span class="hljs-property">name</span>);
+    },
+    <span class="hljs-title function_">reduceMix</span>(<span class="hljs-params"><span class="hljs-attr">palette</span>: <span class="hljs-title class_">PaletteItem</span></span>) {
+      activeMix.<span class="hljs-property">value</span>[palette.<span class="hljs-property">name</span>] ??= <span class="hljs-number">0</span>
+      activeMix.<span class="hljs-property">value</span>[palette.<span class="hljs-property">name</span>] -= <span class="hljs-number">1</span>
+      activeMix.<span class="hljs-property">value</span>[palette.<span class="hljs-property">name</span>] = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(<span class="hljs-number">0</span>, activeMix.<span class="hljs-property">value</span>[palette.<span class="hljs-property">name</span>])
+      <span class="hljs-comment">// Save immediately after every change</span>
+      mixHistory.<span class="hljs-title function_">saveTodaysMix</span>(activeMix.<span class="hljs-property">value</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">activePalette</span>.<span class="hljs-property">name</span>);
+    },
+  }
+}
+</code></pre><p><strong>Data structure stored:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;mix-history:20:1:2026&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Standard RGB + BW&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;mixes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;Red&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;Blue&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;White&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre><p>This approach means:</p>
+<ul>
+<li>✅ Game state persists across page refreshes</li>
+<li>✅ Players can close their browser and return later</li>
+<li>✅ Multiple browsers on the same device each have their own history</li>
+<li>❌ History doesn&#39;t sync across devices (would need backend)</li>
+</ul>
+<hr>
+<h2>Chapter 6: Modern Web APIs—Using the Native Dialog Element</h2>
+<h3>The Traditional Approach</h3>
+<p>Traditionally, creating interactive dialogs in web apps meant:</p>
+<pre><code class="hljs language-html"><span class="hljs-comment">&lt;!-- Old way: Custom modal markup --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;modal&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;myModal&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;modal-content&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;close&quot;</span>&gt;</span><span class="hljs-symbol">&amp;times;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Dialog content here<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre><p>Then managing with CSS and JavaScript:</p>
+<ul>
+<li>Custom styling for the overlay, backdrop, animations</li>
+<li>JavaScript to handle show/hide/positioning</li>
+<li>Accessibility considerations (focus trap, keyboard events)</li>
+<li>Boilerplate, boilerplate, boilerplate</li>
+</ul>
+<h3>The Modern Solution: HTML <code>&lt;dialog&gt;</code> Element</h3>
+<p>HTML5 introduced the native <code>&lt;dialog&gt;</code> element. It handles all the complexity for you:</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">dialog</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;dialog-content&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Dialog Title<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Your content here<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>Close<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dialog</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dialog</span>&gt;</span>
+</code></pre><p>With browser-provided behavior:</p>
+<ul>
+<li>✅ Built-in backdrop overlay</li>
+<li>✅ Automatic keyboard handling (ESC to close)</li>
+<li>✅ Focus management (focus trapped inside)</li>
+<li>✅ Hardware-accelerated animations</li>
+<li>✅ Minimal CSS needed</li>
+</ul>
+<h3>Integration with Vue</h3>
+<p>Using Vue&#39;s template refs, we can interact with the native <code>HTMLDialogElement</code> API:</p>
+<pre><code class="hljs language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+import { ref } from &#x27;vue&#x27;;
+
+const dialog = ref&lt;HTMLDialogElement&gt;()
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;!-- Dialog with Vue binding --&gt;
+  &lt;dialog ref=&quot;dialog&quot; class=&quot;fade-in&quot;&gt;
+    &lt;div class=&quot;dialog-content&quot;&gt;
+      &lt;h1 class=&quot;dialog-title&quot;&gt;How it is calculated&lt;/h1&gt;
+      
+      &lt;p class=&quot;dialog-typo&quot;&gt;
+        Color similarity is measured based on perceptual differences using 
+        the CIELAB color delta formula...
+      &lt;/p&gt;
+      
+      &lt;button class=&quot;button&quot; @click=&quot;dialog?.close()&quot;&gt;Close&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/dialog&gt;
+
+  &lt;!-- Trigger button --&gt;
+  &lt;button @click=&quot;dialog?.showModal()&quot;&gt;Show Help&lt;/button&gt;
+&lt;/template&gt;
+</code></pre><p>That&#39;s it! No complex state management, no custom CSS for modals.</p>
+<h3>Styling the Dialog</h3>
+<p>The <code>&lt;dialog&gt;</code> element can be styled with standard CSS, and we added a few modern touches:</p>
+<pre><code class="hljs language-css">dialog {
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">16px</span>;
+  <span class="hljs-attribute">min-width</span>: <span class="hljs-number">300px</span>;
+}
+
+<span class="hljs-comment">/* Fade-in animation */</span>
+<span class="hljs-keyword">@keyframes</span> fadeIn {
+  <span class="hljs-selector-tag">from</span> {
+    <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+    <span class="hljs-attribute">top</span>: <span class="hljs-number">49%</span>;
+  }
+  <span class="hljs-selector-tag">to</span> {
+    <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+    <span class="hljs-attribute">top</span>: <span class="hljs-number">50%</span>;
+  }
+}
+
+<span class="hljs-selector-class">.fade-in</span> {
+  <span class="hljs-attribute">animation</span>: fadeIn <span class="hljs-number">200ms</span> ease-in-out forwards;
+}
+</code></pre><p>The <code>::backdrop</code> pseudo-element is automatically styled by the browser with a semi-transparent overlay.</p>
+<h3>Multiple Dialog Examples in Our App</h3>
+<p><strong>Example 1: Color Similarity Explanation</strong></p>
+<pre><code class="hljs language-vue">&lt;dialog ref=&quot;dialog&quot; class=&quot;fade-in&quot;&gt;
+  &lt;div class=&quot;auto-layout vertical top-center gap-32&quot;&gt;
+    &lt;div class=&quot;dialog-title&quot;&gt;How it is calculated&lt;/div&gt;
+    &lt;div class=&quot;dialog-typo&quot;&gt;
+      &lt;b&gt;Color similarity&lt;/b&gt; is measured based on perceptual differences 
+      using the CIELAB color delta formula...
+    &lt;/div&gt;
+    &lt;AppButton label=&quot;Close&quot; @click=&quot;dialog?.close()&quot; /&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;
+
+&lt;!-- Trigger with help icon --&gt;
+&lt;i class=&quot;material-symbols-outlined&quot; @click=&quot;dialog?.showModal()&quot;&gt;help&lt;/i&gt;
+</code></pre><p><strong>Example 2: Yesterday&#39;s Results</strong></p>
+<pre><code class="hljs language-vue">&lt;dialog ref=&quot;dialog&quot; class=&quot;fade-in&quot;&gt;
+  &lt;div class=&quot;auto-layout vertical top-center gap-32&quot;&gt;
+    &lt;div class=&quot;dialog-title&quot;&gt;Result #{{ getDaysAfterRelease() - 1 }}&lt;/div&gt;
+    
+    &lt;MixSummary 
+      :color=&quot;yesterdaysMix&quot; 
+      :name=&quot;yesterdaysPuzzle.palette.name&quot; 
+      :mixes=&quot;yesterdaysPuzzle.paletteCount&quot; 
+    /&gt;
+    
+    &lt;div v-if=&quot;yesterdaysUserMix&quot;&gt;
+      Your similarity: {{ compareSimilarity(...) }}%
+    &lt;/div&gt;
+    
+    &lt;AppButton label=&quot;Close&quot; @click=&quot;dialog?.close()&quot; /&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;
+
+&lt;!-- Trigger with button --&gt;
+&lt;AppButton label=&quot;Yesterday&#x27;s result&quot; @click=&quot;showYesterdaysResult&quot; /&gt;
+</code></pre><h3>Browser Support &amp; Advantages</h3>
+<ul>
+<li><strong>Modern browsers</strong>: Full support in Chrome, Firefox, Safari, Edge</li>
+<li><strong>Fallback</strong>: Older browsers can use a polyfill or detect via feature testing</li>
+<li><strong>Performance</strong>: Dialog management is handled by the browser, not JavaScript</li>
+<li><strong>Accessibility</strong>: Built-in ARIA semantics and keyboard handling</li>
+</ul>
+<p>The <code>&lt;dialog&gt;</code> element represents a shift toward letting browsers handle UI complexity natively, reducing framework overhead.</p>
+</div>
+</div>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"
+/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+<style>
+  .hljs {
+    border-radius: 4px;
+    background-color: #afacac;
+  }
+</style>
