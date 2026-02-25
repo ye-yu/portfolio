@@ -20,7 +20,7 @@
     flex-shrink: 0;
     flex-grow: 0;
     flex-basis: 400px;
-    background: #313131;
+    background: #0a211e;
     min-height: 100dvh;
     min-height: 100vh;
   }
@@ -37,7 +37,7 @@
     height: 100dvh;
     height: 100vh;
     overflow-y: auto;
-    background-color: #bbb7b7;
+    background-color: #b7b7bb;
     color: #333;
   }
 
@@ -71,12 +71,17 @@
 
     .content-container {
       height: unset;
-      height: unset;
     }
 
     .content-content {
       padding: 40px;
     }
+  }
+
+  .header-text {
+    color: #8a8a8a;
+    font-size: 16px;
+    font-weight: 400
   }
 </style>
 
@@ -86,21 +91,17 @@
       <div class="flex-col header-content" style="gap: 24px">
         <div style="padding-top: 60px"></div>
         <div style="letter-spacing: 1px; padding-bottom: 12px">
-          <a
-            href="https://raflie.com/#"
-            style="font-size: 24px; font-weight: 700; color: white"
-            >Raflie Zainuddin</a
-          >
+          <a href="https://raflie.com/#" style="font-size: 24px; font-weight: 700; color: white">Raflie Zainuddin</a>
         </div>
-        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+        <div class="header-text">
           Welcome to my page.
         </div>
-        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+        <div class="header-text">
           I am Raflie Zainuddin, and I like experimenting with
           <span style="color: white; font-weight: 700">JavaScript</span> and
           <span style="color: white; font-weight: 700">TypeScript</span>.
         </div>
-        <div style="color: #cccccc; font-size: 16px; font-weight: 400">
+        <div class="header-text">
           On my website, I enjoy sharing how I leverage functionalities of the
           programming languages to create useful hacks and tricks. Hopefully,
           these insights can help you enhance and streamline your own projects.
@@ -108,64 +109,36 @@
 
         <div style="display: flex; margin-top: 32px; gap: 8px">
           <div style="background-color: #1a1a1a; border-radius: 999px">
-            <a
-              href="https://github.com/ye-yu"
-              style="
+            <a href="https://github.com/ye-yu" style="
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 width: 40px;
                 height: 40px;
-              "
-            >
-              <svg
-                style="stroke: white"
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-github"
-              >
+              ">
+              <svg style="stroke: white" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-github">
                 <path
-                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
-                ></path>
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                </path>
               </svg>
             </a>
           </div>
 
           <div style="background-color: white; border-radius: 999px">
-            <a
-              href="https://linkedin.com/in/raflie"
-              style="
+            <a href="https://linkedin.com/in/raflie" style="
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 min-width: 40px;
                 height: 40px;
                 gap: 8px;
-              "
-            >
-              <svg
-                style="stroke: black"
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-linkedin"
-              >
-                <path
-                  d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
-                ></path>
+              ">
+              <svg style="stroke: black" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-linkedin">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
                 <rect x="2" y="9" width="4" height="12"></rect>
                 <circle cx="4" cy="4" r="2"></circle>
               </svg>
@@ -333,10 +306,7 @@
   </div>
 </body>
 
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"
-/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
