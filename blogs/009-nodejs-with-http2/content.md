@@ -281,12 +281,3 @@ That also means the foundation of that is build on HTTP/2 and HTTP/1 cannot be r
 As of [Oct 2025](https://github.com/nodejs/node/issues/57281), experimental QUIC can be enabled using additional build flag, and there is still a long way to go until we will have our first HTTP/3 module in Nodejs. Currently, the feature is tracked in this issue on GitHub - [HTTP/3 support #38478](https://github.com/nodejs/node/issues/38478).
 
 For now, if you needed a HTTP/3 server, you may build from any existing HTTP/3 application and expose the neseccary bindings to Nodejs. One of the repository that I would suggest is [microsoft/msquic](https://github.com/microsoft/msquic).
-
---end of blog
---meta.json
-{
-  "title": "",
-  "description": "",
-  "summary": "",
-  "keywords": ""
-}

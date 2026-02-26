@@ -386,14 +386,6 @@ server.<span class="hljs-title function_">listen</span>(<span class="hljs-number
 <p>That also means the foundation of that is build on HTTP/2 and HTTP/1 cannot be reused for HTTP/3, and it must be develop and added to the Nodejs native codebase. As I was researching through the timeline of the development of QUIC &times; HTTP/3 in the Nodejs repository, the initial effort to support this was started around <a href="https://github.com/nodejs/node/issues/23064">Sep 2018</a> by the feature champion <a href="https://github.com/jasnell">James M Snell | github:jsnell</a> with huge code changes. As a result, the development turned into tiny PRs that are meant to slowly build up the foundation of HTTP/3 module.</p>
 <p>As of <a href="https://github.com/nodejs/node/issues/57281">Oct 2025</a>, experimental QUIC can be enabled using additional build flag, and there is still a long way to go until we will have our first HTTP/3 module in Nodejs. Currently, the feature is tracked in this issue on GitHub - <a href="https://github.com/nodejs/node/issues/38478">HTTP/3 support #38478</a>.</p>
 <p>For now, if you needed a HTTP/3 server, you may build from any existing HTTP/3 application and expose the neseccary bindings to Nodejs. One of the repository that I would suggest is <a href="https://github.com/microsoft/msquic">microsoft/msquic</a>.</p>
-<p>--end of blog
---meta.json
-{
-  &quot;title&quot;: &quot;&quot;,
-  &quot;description&quot;: &quot;&quot;,
-  &quot;summary&quot;: &quot;&quot;,
-  &quot;keywords&quot;: &quot;&quot;
-}</p>
 </div>
 </div>
 
