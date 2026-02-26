@@ -1,6 +1,4 @@
-# Touch water - HTTP/2 (and HTTP/3?) in Nodejs servers
-
-> Touch water - my metaphora of brief but insightful exploration
+> Touch water - my metaphore of brief but insightful exploration
 
 HTTP/2 is a major revision of HTTP/1 that was officially standardize around 2015. That means, today (2026), it has been just over a decade since its release, and there are already supports in many major HTTP server library ready to be used. Running deep research prompts (woohoo AI) on the benefits of HTTP/2, I can see major improvements like better content streaming capabilities, reduced communication latency, and backwards compatibility. Many, if not all, major browsers right now also already support HTTP/2 connection too.
 

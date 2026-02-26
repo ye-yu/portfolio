@@ -155,16 +155,15 @@
       <span style="padding-right: 8px">
         <img src="assets/link.svg" alt="link" />
       </span>
-      <a href="009-nodejs-with-http2.html" style="color: #333; font-weight: 700">
+      <a href="009-nodejs-with-http2.html" style="color: #333; font-weight: 700; letter-spacing: -5%;">
         Touch water - HTTP/2 (and HTTP/3?) in Nodejs servers
       </a>
     </div>
     <div class="blog-timestamp">2026 Feb 26 &bull; 7min read time</div>
   </div>
   <div class="divider"></div>
-  <div class="flex-col" name="blog-content"><h1>Touch water - HTTP/2 (and HTTP/3?) in Nodejs servers</h1>
-<blockquote>
-<p>Touch water - my metaphora of brief but insightful exploration</p>
+  <div class="flex-col" name="blog-content"><blockquote>
+<p>Touch water - my metaphore of brief but insightful exploration</p>
 </blockquote>
 <p>HTTP/2 is a major revision of HTTP/1 that was officially standardize around 2015. That means, today (2026), it has been just over a decade since its release, and there are already supports in many major HTTP server library ready to be used. Running deep research prompts (woohoo AI) on the benefits of HTTP/2, I can see major improvements like better content streaming capabilities, reduced communication latency, and backwards compatibility. Many, if not all, major browsers right now also already support HTTP/2 connection too.</p>
 <p>However, has it really been adopted anywhere? Even right now, the services that I have been developing and maintaining are still running on HTTP/1, considering that I am still using default <code>express</code> and <code>Nestjs</code> setup. There is no doubt that migrating from HTTP/1 to HTTP/2 might break things, but Nodejs has provided a compatibility layer to ensure easy migration of existing HTTP/1 services (See <a href="https://nodejs.org/api/http2.html#compatibility-api">HTTP/2 Compatibility API</a>).</p>
@@ -379,13 +378,13 @@ server.<span class="hljs-title function_">listen</span>(<span class="hljs-number
 <h1>HTTP/2 - Why no adoption still?</h1>
 <p>When trying to plug in HTTP/2 to popular frameworks out there, it seems like I have done only &quot;workarounds&quot; that may not be maintainable in the future. This urges the need to develop solid codebase that is built around Nodejs HTTP/2 feature. As a result, this will probably add overhead and latency instead of the intended performance improvement we expect to achive from HTTP/2</p>
 <p>However, it still puzzled me that there is no initiative surfacing the web on to support HTTP/2 on Nodejs servers. No frameworks. No libraries. Nada.</p>
-<p>Once more, I returned to the deep research prompt (woohoo AI once more), and it seems like the hype is gone because the benefits HTTP/2 offered is unable to compete with the trust of existing HTTP/2 frameworks and libraries. The good ol&#39; &quot;If it is not broken, why fix&quot; principle.</p>
+<p>Once more, I returned to the deep research prompt (woohoo AI once more), and it seems like the hype is gone because the benefits HTTP/2 offered is unable to compete with the trust of existing HTTP/1 frameworks and libraries. The good ol&#39; &quot;If it is not broken, why fix&quot; principle.</p>
 <p>While HTTP/2 has been standardized, HTTP/3 surfaced to the web as an improvement to HTTP/2.</p>
 <h1>HTTP/3 - What happened?</h1>
 <p>One of the defining features of HTTP/3 is the transport layer that is it built on, which is QUIC. QUIC is a transport layer that is based on UDP, which means it does not have the standardised TCP handshake like HTTP/2 and HTTP/1 have.</p>
-<p>That also means the foundation of that is build on HTTP/2 and HTTP/1 cannot be reused for HTTP/3, and it must be develop and added to the Nodejs native codebase. As I was researching through the timeline of the development of QUIC &times; HTTP/3 in the Nodejs repository, the initial effort to support this was started around <a href="https://github.com/nodejs/node/issues/23064">Sep 2018</a> by the feature champion <a href="https://github.com/jasnell">James M Snell | github:jsnell</a> with huge code changes. As a result, the development turned into tiny PRs that are meant to slowly build up the foundation of HTTP/3 module.</p>
+<p>That also means the foundation of that is built on HTTP/2 and HTTP/1 cannot be reused for HTTP/3, and it must be developed and added to the Nodejs native codebase. As I was researching through the timeline of the development of QUIC &times; HTTP/3 in the Nodejs repository, the initial effort to support this was started around <a href="https://github.com/nodejs/node/issues/23064">Sep 2018</a> by the feature champion <a href="https://github.com/jasnell">James M Snell | github:jsnell</a> with huge code changes. As a result, the development turned into tiny PRs that are meant to slowly build up the foundation of HTTP/3 module.</p>
 <p>As of <a href="https://github.com/nodejs/node/issues/57281">Oct 2025</a>, experimental QUIC can be enabled using additional build flag, and there is still a long way to go until we will have our first HTTP/3 module in Nodejs. Currently, the feature is tracked in this issue on GitHub - <a href="https://github.com/nodejs/node/issues/38478">HTTP/3 support #38478</a>.</p>
-<p>For now, if you needed a HTTP/3 server, you may build from any existing HTTP/3 application and expose the neseccary bindings to Nodejs. One of the repository that I would suggest is <a href="https://github.com/microsoft/msquic">microsoft/msquic</a>.</p>
+<p>For now, if you needed a HTTP/3 server, you may build from any existing HTTP/3 application and expose the neseccary bindings to Nodejs. One of the repositories that I would suggest is <a href="https://github.com/microsoft/msquic">microsoft/msquic</a>.</p>
 </div>
 </div>
 
