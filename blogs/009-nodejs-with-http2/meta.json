@@ -1,0 +1,6 @@
+{
+  "title": "Touch water - HTTP/2 (and HTTP/3?) in Nodejs servers",
+  "description": "2026 Feb 26 &bull; 7min read time",
+  "summary": "A deep dive into implementing HTTP/2 in Node.js servers using Express and NestJS, discussing why HTTP/2 adoption remains limited and the future of HTTP/3 support.",
+  "keywords": "HTTP/2, HTTP/3, Node.js, Express, NestJS, QUIC, server implementation, performance"
+}

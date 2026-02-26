@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<meta name="title" content="raflie.com | Touch water - HTTP/2 (and HTTP/3?) in Nodejs servers" />
+<meta name="description" content="A deep dive into implementing HTTP/2 in Node.js servers using Express and NestJS, discussing why HTTP/2 adoption remains limited and the future of HTTP/3 support." />
+<meta name="keywords" content="HTTP/2, HTTP/3, Node.js, Express, NestJS, QUIC, server implementation, performance" />
+<meta name="robots" content="index, follow" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="30 days" />
+<meta name="author" content="Raflie Zainuddin <rafolwen98@gmail.com>" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+  <link rel="stylesheet" href="index.css" />
+  <title>raflie.com | Touch water - HTTP/2 (and HTTP/3?) in Nodejs servers</title>
+</head>
+
+<style>
+  .header-container {
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-basis: 400px;
+    background: #0a1621;
+    min-height: 100dvh;
+    min-height: 100vh;
+  }
+
+  .header-content {
+    padding-top: 24px;
+    padding-right: 32px;
+    padding-bottom: 24px;
+    padding-left: 92px;
+  }
+
+  .content-container {
+    flex: 1;
+    height: 100dvh;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #b7b7bb;
+    color: #333;
+  }
+
+  .content-content {
+    padding: 64px 72px;
+    max-width: 700px;
+    margin: auto;
+  }
+
+  .blog-title {
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: 1px;
+  }
+
+  .blog-timestamp {
+    color: #665;
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      flex: 1;
+      min-height: unset;
+      min-height: unset;
+    }
+
+    .header-content {
+      padding: 32px 40px;
+    }
+
+    .content-container {
+      height: unset;
+    }
+
+    .content-content {
+      padding: 40px;
+    }
+  }
+
+  .header-text {
+    color: #8a8a8a;
+    font-size: 16px;
+    font-weight: 400
+  }
+</style>
+
+<body>
+  <div class="flex-row md-flex-col width-full">
+    <div class="flex-col header-container">
+      <div class="flex-col header-content" style="gap: 24px">
+        <div style="padding-top: 60px"></div>
+        <div style="letter-spacing: 1px; padding-bottom: 12px">
+          <a href="https://raflie.com/#" style="font-size: 24px; font-weight: 700; color: white">Raflie Zainuddin</a>
+        </div>
+        <div class="header-text">
+          Welcome to my page.
+        </div>
+        <div class="header-text">
+          I am Raflie Zainuddin, and I like experimenting with
+          <span style="color: white; font-weight: 700">JavaScript</span> and
+          <span style="color: white; font-weight: 700">TypeScript</span>.
+        </div>
+        <div class="header-text">
+          On my website, I enjoy sharing how I leverage functionalities of the
+          programming languages to create useful hacks and tricks. Hopefully,
+          these insights can help you enhance and streamline your own projects.
+        </div>
+
+        <div style="display: flex; margin-top: 32px; gap: 8px">
+          <div style="background-color: #1a1a1a; border-radius: 999px">
+            <a href="https://github.com/ye-yu" style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+              ">
+              <svg style="stroke: white" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-github">
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                </path>
+              </svg>
+            </a>
+          </div>
+
+          <div style="background-color: white; border-radius: 999px">
+            <a href="https://linkedin.com/in/raflie" style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 40px;
+                height: 40px;
+                gap: 8px;
+              ">
+              <svg style="stroke: black" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-linkedin">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-container">
+      <div class="flex-col content-content" style="gap: 40px">
+        <div class="flex-col" name="blog-container" style="gap: 24px">
+  <div class="flex-col" name="blog-header">
+    <div style="padding-bottom: 24px"><a href="index.html">&larr; &nbsp; back</a></div>
+    <div class="blog-title">
+      <span style="padding-right: 8px">
+        <img src="assets/link.svg" alt="link" />
+      </span>
+      <a href="009-nodejs-with-http2.html" style="color: #333; font-weight: 700">
+        Touch water - HTTP/2 (and HTTP/3?) in Nodejs servers
+      </a>
+    </div>
+    <div class="blog-timestamp">2026 Feb 26 &bull; 7min read time</div>
+  </div>
+  <div class="divider"></div>
+  <div class="flex-col" name="blog-content"><h1>Touch water - HTTP/2 (and HTTP/3?) in Nodejs servers</h1>
+<blockquote>
+<p>Touch water - my metaphora of brief but insightful exploration</p>
+</blockquote>
+<p>HTTP/2 is a major revision of HTTP/1 that was officially standardize around 2015. That means, today (2026), it has been just over a decade since its release, and there are already supports in many major HTTP server library ready to be used. Running deep research prompts (woohoo AI) on the benefits of HTTP/2, I can see major improvements like better content streaming capabilities, reduced communication latency, and backwards compatibility. Many, if not all, major browsers right now also already support HTTP/2 connection too.</p>
+<p>However, has it really been adopted anywhere? Even right now, the services that I have been developing and maintaining are still running on HTTP/1, considering that I am still using default <code>express</code> and <code>Nestjs</code> setup. There is no doubt that migrating from HTTP/1 to HTTP/2 might break things, but Nodejs has provided a compatibility layer to ensure easy migration of existing HTTP/1 services (See <a href="https://nodejs.org/api/http2.html#compatibility-api">HTTP/2 Compatibility API</a>).</p>
+<p>So, in this blog post, I am going to explore methods and challenges in HTTP/2 implementation as well as a little bit research on HTTP/3 and why is it not at all available -&gt; all topics on <strong>Nodejs</strong>.</p>
+<h1>Nodejs HTTP/2 module</h1>
+<p>My impression of Nodejs&#39;s HTTP/2 module is that they are built around the foundation of &#39;stream&#39;. You have a listener on an event, and you process the arguments that was passed onto the listener. Very much like this:</p>
+<pre><code class="hljs language-ts">stream.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function"><span class="hljs-params">chunk</span> =&gt;</span> {
+    <span class="hljs-title function_">process</span>(chunk)
+})
+</code></pre><p>Therefore, every single connection that was made into your HTTP/2 server will be streamed to your server handler, and your handler should also be able to stream the response to your clients. All of these is done without having to setup &#39;keep-alive&#39; and other headers like you usually do with HTTP/1 for streaming (e.g. chunked transport).</p>
+<p>However, we are not interested in streaming (for now). Many of HTTP/1 services out there are in &quot;Read request -&gt; Process request -&gt; Respond request&quot; style. Usually, the read stage immediately transform the request body into a materialized object, and very rarely does it stream the request body to the process stage. This kind of streaming is dedicated to large body like uploading a huge file to the server.</p>
+<p>Luckily, Nodejs has provided a <a href="https://nodejs.org/api/http2.html#compatibility-api">HTTP/2 Compatibility API</a> that provides common properties of HTTP/1 request and response object into your handler like this.</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { createSecureServer } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:http2&#x27;</span>;
+<span class="hljs-keyword">const</span> server = <span class="hljs-title function_">createSecureServer</span>(secureOptions, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
+  res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;Content-Type&#x27;</span>, <span class="hljs-string">&#x27;text/html&#x27;</span>);
+  res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;X-Foo&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>);
+  res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, { <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;text/plain; charset=utf-8&#x27;</span> });
+  res.<span class="hljs-title function_">end</span>(<span class="hljs-string">&#x27;ok&#x27;</span>);
+});
+</code></pre><p>Done and dusted. Your traditional http server setup.</p>
+<h2>HTTP/2 is &quot;secure by default&quot;</h2>
+<p>You <em>can</em> set up HTTP2 server without SSL, but many major browsers out there require HTTP2 connection to be secure. This might add one extra steps in testing your server from a browser. Fortunately, setting up a key and a cert are easy nowadays. If you are on a Unix system, you may use the <code>openssl</code> program to generate a self-signed certificate to be supplied to your HTTP2 server.</p>
+<pre><code class="hljs language-sh">openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+</code></pre><p>And in your Nodejs server setup:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { readFileSync } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;fs&#x27;</span>;
+<span class="hljs-keyword">import</span> { createSecureServer } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:http2&#x27;</span>;
+<span class="hljs-keyword">const</span> secureOptions = {
+    <span class="hljs-attr">key</span>: <span class="hljs-title function_">readFileSync</span>(<span class="hljs-string">&#x27;./key.pem&#x27;</span>),
+    <span class="hljs-attr">cert</span>: <span class="hljs-title function_">readFileSync</span>(<span class="hljs-string">&#x27;./cert.pem&#x27;</span>),
+    <span class="hljs-attr">allowHttp1</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// &lt;-- important! allow compat with old client, e.g. Nodejs fetch</span>
+}
+<span class="hljs-keyword">const</span> server = <span class="hljs-title function_">createSecureServer</span>(secureOptions, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
+  res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;Content-Type&#x27;</span>, <span class="hljs-string">&#x27;text/html&#x27;</span>);
+  res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;X-Foo&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>);
+  res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, { <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;text/plain; charset=utf-8&#x27;</span> });
+  res.<span class="hljs-title function_">end</span>(<span class="hljs-string">&#x27;ok&#x27;</span>);
+});
+</code></pre><h1><code>express</code> with HTTP/2</h1>
+<p><code>express</code> is a great library of http server that provides thin layer of utilities and features while still leveraging Nodejs internal http features. Plus, there are also many libraries out there that are built for <code>express</code> and used by many common http servers (notable mentions: cors, helmet).</p>
+<blockquote>
+<p>It is also unfortunate that my experience with debugging routes of <code>express</code> has been painful and uninsightful. I will elaborate on this more on a different blog post if required.</p>
+</blockquote>
+<p>When creating an <code>express</code> app, there are actually two ways to start serving your service:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>()
+
+app.<span class="hljs-title function_">listen</span>(<span class="hljs-number">1234</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Listening at port 1234&#x27;</span>)
+})
+
+<span class="hljs-keyword">import</span> http <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:http&#x27;</span>
+
+<span class="hljs-keyword">const</span> server = http.<span class="hljs-title function_">createServer</span>(app)
+server.<span class="hljs-title function_">listen</span>(<span class="hljs-number">1235</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Listening at port 1235&#x27;</span>)
+})
+</code></pre><p>This is because the <code>app</code> itself is a handler function. That means are can replace <code>http</code> with <code>http2</code> like this:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>()
+<span class="hljs-keyword">const</span> server = <span class="hljs-title function_">createSecureServer</span>(secureOptions, app);
+</code></pre><p>However, upon running the server, there is an issue on how <code>express</code> handle the request and response object. Digging down into their source code, I found that their request and response object is inheriting prototype from HTTP/1 request and response object. On top of that, the handler function will overwrite the prototype of the request and response object to those of <code>express</code>.</p>
+<p>This is an issue when passing request and response object from HTTP/2 because the compatibility layer by HTTP/2 has its own implementation of methods and properties that is not inheritting from classes of HTTP/1. As a result, we will encounter errors of &quot;reading from <code>undefined</code>&quot;.</p>
+<p>Luckily, we can work around it using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy">Proxy</a>. In this proxy, when a HTTP/1 prototype is assigned to the request/response object, we will utilize this prototype as soon as the requested property does not exist in HTTP/2 objects.</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">function</span> applyPrototype&lt;T&gt;(<span class="hljs-attr">requestOrResponse</span>: T) {
+    <span class="hljs-keyword">let</span> <span class="hljs-attr">proto</span>: <span class="hljs-built_in">object</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Proxy</span>&lt;T&gt;(requestOrResponse, {
+        <span class="hljs-title function_">get</span>(<span class="hljs-params">target, prop, receiver</span>) {
+          <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment</span>
+          <span class="hljs-keyword">const</span> accessed = <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">get</span>(target, prop, receiver);
+          <span class="hljs-keyword">if</span> (prop === <span class="hljs-string">&#x27;app&#x27;</span>) {
+            <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return</span>
+            <span class="hljs-keyword">return</span> accessed;
+          }
+
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> accessed === <span class="hljs-string">&#x27;function&#x27;</span>) {
+            <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access</span>
+            <span class="hljs-keyword">return</span> accessed.<span class="hljs-title function_">bind</span>(target);
+          }
+
+          <span class="hljs-keyword">if</span> (accessed !== <span class="hljs-literal">undefined</span>) {
+            <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return</span>
+            <span class="hljs-keyword">return</span> accessed;
+          }
+
+          <span class="hljs-keyword">if</span> (!proto) {
+            <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return</span>
+            <span class="hljs-keyword">return</span> accessed;
+          }
+
+          <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment</span>
+          <span class="hljs-keyword">const</span> proxied = <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">get</span>(proto, prop, receiver);
+
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> proxied === <span class="hljs-string">&#x27;function&#x27;</span>) {
+            <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access</span>
+            <span class="hljs-keyword">return</span> proxied.<span class="hljs-title function_">bind</span>(receiver);
+          }
+
+          <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return</span>
+          <span class="hljs-keyword">return</span> proxied;
+        },
+        <span class="hljs-title function_">setPrototypeOf</span>(<span class="hljs-params">_, v</span>) {
+            proto = v;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        },
+    })
+}
+</code></pre><p>A lot of things going around here, our goal is to bind properties available in HTTP/2 to its own and bind proxy properties with the proxy instance.</p>
+<p>Once more, we are doing this instead of updating the prototype of the request and response object because the compatibility layer of HTTP/2 does not inherit from HTTP/1 classes. Therefore, this is a quick and easy method to add extra compatibility for our <code>express</code> app.</p>
+<blockquote>
+<p>Food for thought: Is <code>express</code> still a reasonable library for HTTP/2 server? Or do we need <code>express/2</code> that is dedicatedly built around HTTP/2 architecture? </p>
+</blockquote>
+<h1>Nestjs with HTTP/2</h1>
+<p>Now that we know how to setup http2 on <code>express</code>, let&#39;s bring this setup to our Nestjs application. Working with large-scale project, I have fell in love with the modularity and extensibility of Nestjs. It is basically Spring on JavaScript (hot take).</p>
+<p>Internally, Nestjs uses <code>adapter</code> to allow multiple http platforms to run on Nestjs. It has two built-in platform that you can choose for your Nestjs server:</p>
+<ul>
+<li>Express</li>
+<li><a href="https://docs.nestjs.com/techniques/performance">Fastify</a></li>
+</ul>
+<p>To switch to a different platform, you may initiate your Nestjs application differently like this:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">FastifyAdapter</span>, <span class="hljs-title class_">NestFastifyApplication</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/platform-fastify&#x27;</span>;
+
+<span class="hljs-keyword">const</span> app = <span class="hljs-keyword">await</span> <span class="hljs-title class_">NestFactory</span>.<span class="hljs-title function_">create</span>(<span class="hljs-title class_">AppModule</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">FastifyAdapter</span>());
+<span class="hljs-keyword">await</span> app.<span class="hljs-title function_">listen</span>(process.<span class="hljs-property">env</span>.<span class="hljs-property">PORT</span> ?? <span class="hljs-number">3000</span>);
+</code></pre><p>We can leverage the adapter class to allow http2 server in our Nestjs application. Since we already have <code>ExpressAdapter</code> class, we can simply extend from this class and override init http server function.</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">NestApplicationOptions</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/common&#x27;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">ExpressAdapter</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/platform-express&#x27;</span>;
+<span class="hljs-keyword">import</span> http2 <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:http2&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Http2ExpressAdapter</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">ExpressAdapter</span> {
+    <span class="hljs-title function_">initHttpServer</span>(<span class="hljs-attr">options</span>: <span class="hljs-title class_">NestApplicationOptions</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">if</span> (!options.<span class="hljs-property">httpsOptions</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Secure options must be provided to use http2&#x27;</span>);
+    }
+
+    <span class="hljs-keyword">const</span> app = <span class="hljs-variable language_">this</span>.<span class="hljs-property">instance</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">Express</span>;
+    <span class="hljs-comment">// this will break nestjs and express</span>
+    <span class="hljs-comment">// some method is called without the proxy initialized</span>
+    <span class="hljs-comment">// but also, fix security, remove server hints</span>
+    app.<span class="hljs-title function_">disable</span>(<span class="hljs-string">&#x27;x-powered-by&#x27;</span>);
+    <span class="hljs-keyword">const</span> server = http2.<span class="hljs-title function_">createSecureServer</span>({ ...options.<span class="hljs-property">httpsOptions</span>, <span class="hljs-attr">allowHTTP1</span>: <span class="hljs-literal">true</span> }, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
+      <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(req, { app });
+      <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(res, { app });
+      <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-argument</span>
+      <span class="hljs-title function_">app</span>(<span class="hljs-title function_">extend</span>(req) <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>, <span class="hljs-title function_">extend</span>(res) <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>);
+    });
+
+    <span class="hljs-comment">// also!! server is not inheriting from event emitter</span>
+    <span class="hljs-comment">// nestjs will break without .once method</span>
+    <span class="hljs-comment">// so let&#x27;s just proxy one more method</span>
+    <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(server, {
+      <span class="hljs-attr">once</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">event</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">listener</span>: (...args: <span class="hljs-built_in">any</span>[]) =&gt; <span class="hljs-built_in">void</span></span>) =&gt;</span> {
+        server.<span class="hljs-title function_">addListener</span>(event, <span class="hljs-function">(<span class="hljs-params">...args</span>) =&gt;</span> {
+          server.<span class="hljs-title function_">removeListener</span>(event, listener);
+          <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">apply</span>(listener, <span class="hljs-built_in">void</span> <span class="hljs-number">0</span>, args);
+        });
+      },
+    });
+    <span class="hljs-comment">// @ts-expect-error compat handled</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setHttpServer</span>(server);
+
+    <span class="hljs-keyword">if</span> (!options?.<span class="hljs-property">forceCloseConnections</span>) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-keyword">const</span> fn = <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">get</span>(<span class="hljs-variable language_">this</span>, <span class="hljs-string">&#x27;trackOpenConnections&#x27;</span>);
+    <span class="hljs-keyword">if</span> (!fn) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">apply</span>(fn, <span class="hljs-variable language_">this</span>, []);
+  }
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">extend</span>(<span class="hljs-params"><span class="hljs-attr">target</span>: <span class="hljs-built_in">object</span></span>) {
+  <span class="hljs-keyword">let</span> <span class="hljs-attr">proto</span>: <span class="hljs-built_in">object</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Proxy</span>(target, {
+    <span class="hljs-title function_">get</span>(<span class="hljs-params">target, prop, receiver</span>) {
+      <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment</span>
+      <span class="hljs-keyword">const</span> accessed = <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">get</span>(target, prop, receiver);
+      <span class="hljs-keyword">if</span> (prop === <span class="hljs-string">&#x27;app&#x27;</span>) {
+        <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return</span>
+        <span class="hljs-keyword">return</span> accessed;
+      }
+
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> accessed === <span class="hljs-string">&#x27;function&#x27;</span>) {
+        <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access</span>
+        <span class="hljs-keyword">return</span> accessed.<span class="hljs-title function_">bind</span>(target);
+      }
+
+      <span class="hljs-keyword">if</span> (accessed !== <span class="hljs-literal">undefined</span>) {
+        <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return</span>
+        <span class="hljs-keyword">return</span> accessed;
+      }
+
+      <span class="hljs-keyword">if</span> (!proto) {
+        <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return</span>
+        <span class="hljs-keyword">return</span> accessed;
+      }
+
+      <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment</span>
+      <span class="hljs-keyword">const</span> proxied = <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">get</span>(proto, prop, receiver);
+
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> proxied === <span class="hljs-string">&#x27;function&#x27;</span>) {
+        <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access</span>
+        <span class="hljs-keyword">return</span> proxied.<span class="hljs-title function_">bind</span>(receiver);
+      }
+
+      <span class="hljs-comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-return</span>
+      <span class="hljs-keyword">return</span> proxied;
+    },
+    <span class="hljs-title function_">setPrototypeOf</span>(<span class="hljs-params">_, v</span>) {
+      proto = v;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    },
+  });
+}
+</code></pre><p>Apply your changes and <em>voila</em>, your Nestjs server is now running on HTTP/2!</p>
+<h1>HTTP/2 - Why no adoption still?</h1>
+<p>When trying to plug in HTTP/2 to popular frameworks out there, it seems like I have done only &quot;workarounds&quot; that may not be maintainable in the future. This urges the need to develop solid codebase that is built around Nodejs HTTP/2 feature. As a result, this will probably add overhead and latency instead of the intended performance improvement we expect to achive from HTTP/2</p>
+<p>However, it still puzzled me that there is no initiative surfacing the web on to support HTTP/2 on Nodejs servers. No frameworks. No libraries. Nada.</p>
+<p>Once more, I returned to the deep research prompt (woohoo AI once more), and it seems like the hype is gone because the benefits HTTP/2 offered is unable to compete with the trust of existing HTTP/2 frameworks and libraries. The good ol&#39; &quot;If it is not broken, why fix&quot; principle.</p>
+<p>While HTTP/2 has been standardized, HTTP/3 surfaced to the web as an improvement to HTTP/2.</p>
+<h1>HTTP/3 - What happened?</h1>
+<p>One of the defining features of HTTP/3 is the transport layer that is it built on, which is QUIC. QUIC is a transport layer that is based on UDP, which means it does not have the standardised TCP handshake like HTTP/2 and HTTP/1 have.</p>
+<p>That also means the foundation of that is build on HTTP/2 and HTTP/1 cannot be reused for HTTP/3, and it must be develop and added to the Nodejs native codebase. As I was researching through the timeline of the development of QUIC &times; HTTP/3 in the Nodejs repository, the initial effort to support this was started around <a href="https://github.com/nodejs/node/issues/23064">Sep 2018</a> by the feature champion <a href="https://github.com/jasnell">James M Snell | github:jsnell</a> with huge code changes. As a result, the development turned into tiny PRs that are meant to slowly build up the foundation of HTTP/3 module.</p>
+<p>As of <a href="https://github.com/nodejs/node/issues/57281">Oct 2025</a>, experimental QUIC can be enabled using additional build flag, and there is still a long way to go until we will have our first HTTP/3 module in Nodejs. Currently, the feature is tracked in this issue on GitHub - <a href="https://github.com/nodejs/node/issues/38478">HTTP/3 support #38478</a>.</p>
+<p>For now, if you needed a HTTP/3 server, you may build from any existing HTTP/3 application and expose the neseccary bindings to Nodejs. One of the repository that I would suggest is <a href="https://github.com/microsoft/msquic">microsoft/msquic</a>.</p>
+<p>--end of blog
+--meta.json
+{
+  &quot;title&quot;: &quot;&quot;,
+  &quot;description&quot;: &quot;&quot;,
+  &quot;summary&quot;: &quot;&quot;,
+  &quot;keywords&quot;: &quot;&quot;
+}</p>
+</div>
+</div>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+<style>
+  .hljs {
+    border-radius: 4px;
+    background-color: #afacac;
+  }
+</style>
