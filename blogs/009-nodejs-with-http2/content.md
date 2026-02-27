@@ -264,7 +264,7 @@ Apply your changes and _voila_, your Nestjs server is now running on HTTP/2!
 
 When trying to plug in HTTP/2 to popular frameworks out there, it seems like I have done only "workarounds" that may not be maintainable in the future. This urges the need to develop solid codebase that is built around Nodejs HTTP/2 feature. As a result, this will probably add overhead and latency instead of the intended performance improvement we expect to achive from HTTP/2
 
-However, it still puzzled me that there is no initiative surfacing the web on to support HTTP/2 on Nodejs servers. No frameworks. No libraries. Nada.
+However, it still puzzled me that there is no initiatives surfacing the web on to support HTTP/2 on Nodejs servers. No frameworks. No libraries. Nada. (Okay maybe there are but my point, they are not surfacing as much as other HTTP library)
 
 Once more, I returned to the deep research prompt (woohoo AI once more), and it seems like the hype is gone because the benefits HTTP/2 offered is unable to compete with the trust of existing HTTP/1 frameworks and libraries. The good ol' "If it is not broken, why fix" principle.
 
