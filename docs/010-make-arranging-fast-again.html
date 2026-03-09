@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<meta name="title" content="raflie.com | MAFA - Make Arranging (in JS) Fast Again" />
+<meta name="description" content="An in-place, two-pointer quicksort variant that replaces recursion with an explicit pivot stack to reduce allocations and avoid call stack limits, with benchmark comparisons against built-in sort." />
+<meta name="keywords" content="quicksort, two pointers, in-place sorting, pivot stack, iterative algorithm, JavaScript, performance, memory usage, benchmarking" />
+<meta name="robots" content="index, follow" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="30 days" />
+<meta name="author" content="Raflie Zainuddin <rafolwen98@gmail.com>" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+  <link rel="stylesheet" href="index.css" />
+  <title>raflie.com | MAFA - Make Arranging (in JS) Fast Again</title>
+</head>
+
+<style>
+  .header-container {
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-basis: 400px;
+    background: #0a1621;
+    min-height: 100dvh;
+    min-height: 100vh;
+  }
+
+  .header-content {
+    padding-top: 24px;
+    padding-right: 32px;
+    padding-bottom: 24px;
+    padding-left: 92px;
+  }
+
+  .content-container {
+    flex: 1;
+    height: 100dvh;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #b7b7bb;
+    color: #333;
+  }
+
+  .content-content {
+    padding: 64px 72px;
+    max-width: 700px;
+    margin: auto;
+  }
+
+  .blog-title {
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: 1px;
+  }
+
+  .blog-timestamp {
+    color: #666;
+    letter-spacing: 3%;
+    font-size: 14px;
+  }
+
+  blockquote {
+    border-left: 2px solid #666;
+    margin: 0;
+    padding-left: 40px;
+    background: #ccc;
+    color: #666;
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      flex: 1;
+      min-height: unset;
+      min-height: unset;
+    }
+
+    .header-content {
+      padding: 32px 40px;
+    }
+
+    .content-container {
+      height: unset;
+    }
+
+    .content-content {
+      padding: 40px;
+    }
+  }
+
+  .header-text {
+    color: #8a8a8a;
+    font-size: 16px;
+    font-weight: 400
+  }
+</style>
+
+<body>
+  <div class="flex-row md-flex-col width-full">
+    <div class="flex-col header-container">
+      <div class="flex-col header-content" style="gap: 24px">
+        <div style="padding-top: 60px"></div>
+        <div style="letter-spacing: 1px; padding-bottom: 12px">
+          <a href="https://raflie.com/#" style="font-size: 24px; font-weight: 700; color: white">Raflie Zainuddin</a>
+        </div>
+        <div class="header-text">
+          Welcome to my page.
+        </div>
+        <div class="header-text">
+          I am Raflie Zainuddin, and I like experimenting with
+          <span style="color: white; font-weight: 700">JavaScript</span> and
+          <span style="color: white; font-weight: 700">TypeScript</span>.
+        </div>
+        <div class="header-text">
+          On my website, I enjoy sharing how I leverage functionalities of the
+          programming languages to create useful hacks and tricks. Hopefully,
+          these insights can help you enhance and streamline your own projects.
+        </div>
+
+        <div style="display: flex; margin-top: 32px; gap: 8px">
+          <div style="background-color: #1a1a1a; border-radius: 999px">
+            <a href="https://github.com/ye-yu" style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+              ">
+              <svg style="stroke: white" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-github">
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                </path>
+              </svg>
+            </a>
+          </div>
+
+          <div style="background-color: white; border-radius: 999px">
+            <a href="https://linkedin.com/in/raflie" style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 40px;
+                height: 40px;
+                gap: 8px;
+              ">
+              <svg style="stroke: black" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-linkedin">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-container">
+      <div class="flex-col content-content" style="gap: 40px">
+        <div class="flex-col" name="blog-container" style="gap: 24px">
+  <div class="flex-col" name="blog-header">
+    <div style="padding-bottom: 24px"><a href="index.html">&larr; &nbsp; back</a></div>
+    <div class="blog-title">
+      <span style="padding-right: 8px">
+        <img src="assets/link.svg" alt="link" />
+      </span>
+      <a href="010-make-arranging-fast-again.html" style="color: #333; font-weight: 700; letter-spacing: -5%;">
+        MAFA - Make Arranging (in JS) Fast Again
+      </a>
+    </div>
+    <div class="blog-timestamp">2026 Mar 07 &bull; 7min read time</div>
+  </div>
+  <div class="divider"></div>
+  <div class="flex-col" name="blog-content"><p>A few years back, I learnt the Two Pointers Technique to solve many array traversal problems. It was such a revelation and an inspiration to me to write even more complicated code and brag about it in a blog post like this, except that I didn&#39;t actually brag about it because I was too lazy to write a blog post. See the final code snippet in the gist here: [quickSortStack.ts])(<a href="https://gist.github.com/ye-yu/3f5d3bac5f1af9a08935d18592ed1912">https://gist.github.com/ye-yu/3f5d3bac5f1af9a08935d18592ed1912</a>)</p>
+<blockquote>
+<p>MAFA: because MSFA (make sorting fast again) does not make a good acronym.</p>
+</blockquote>
+<p>Two Pointers Technique, in simpler terms, is a way to read through an array from both ends at the same time, and usually you would also name those pointers <code>left</code> and <code>right</code>. Recalling back this technique, I was curious if I could implement it correctly. So, I chose the array sorting problem and implemented a variation of a &quot;quick&quot; sort, which is an algorithm that uses pivots to partition the array into smaller sub-arrays, and then recursively sorts those sub-arrays.</p>
+<h2>How Quick Sort is Usually Implemented</h2>
+<p>In a typical quicksort implementation, the algorithm follows a recursive divide-and-conquer approach. You pick a <strong>pivot</strong> element, partition the array so that smaller elements are on the left and larger elements are on the right, then recursively sort each partition.</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">quickSort</span>(<span class="hljs-params"><span class="hljs-attr">arr</span>: <span class="hljs-built_in">number</span>[]</span>): <span class="hljs-built_in">number</span>[] {
+    <span class="hljs-keyword">if</span> (arr.<span class="hljs-property">length</span> &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> arr;
+
+    <span class="hljs-keyword">const</span> pivot = arr[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">const</span> left = arr.<span class="hljs-title function_">slice</span>(<span class="hljs-number">1</span>).<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> x &lt;= pivot);
+    <span class="hljs-keyword">const</span> right = arr.<span class="hljs-title function_">slice</span>(<span class="hljs-number">1</span>).<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> x &gt; pivot);
+
+    <span class="hljs-keyword">return</span> [...<span class="hljs-title function_">quickSort</span>(left), pivot, ...<span class="hljs-title function_">quickSort</span>(right)];
+}
+</code></pre><p>This is clean and easy to reason about. But notice what happens at every level of recursion: <code>slice</code> and <code>filter</code> create new arrays, and the spread operator allocates yet another array for the result. For an array of length <em>n</em>, you end up allocating O(n log n) worth of temporary arrays. That&#39;s a lot of garbage for the garbage collector to clean up, and for very large arrays it can become a real performance bottleneck.</p>
+<h2>Replacing the Internals with Two Pointers</h2>
+<p>Instead of splitting and merging into new arrays, what if we stayed in-place? This is where the Two Pointers Technique comes in. The idea is to pick a <strong>pivot</strong> element (say, the first element of the sub-array), then walk a <code>left</code> pointer from the beginning and a <code>right</code> pointer from the end, rearranging elements so that everything smaller than the pivot ends up before it, and everything greater ends up after it.</p>
+<p>In the implementation, the partitioning loop does exactly this:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">while</span> (leftIndex &lt;= rightIndex) {
+  <span class="hljs-keyword">const</span> left = arrayView.<span class="hljs-title function_">get</span>(leftIndex);
+  <span class="hljs-keyword">const</span> right = arrayView.<span class="hljs-title function_">get</span>(rightIndex);
+
+  <span class="hljs-keyword">if</span> (p &gt; left) {
+    <span class="hljs-comment">// left is smaller than pivot - swap pivot and left, advance both</span>
+    arrayView.<span class="hljs-title function_">set</span>(pIndex, left);
+    arrayView.<span class="hljs-title function_">set</span>(leftIndex, p);
+    pIndex++;
+    leftIndex++;
+    <span class="hljs-keyword">continue</span>;
+  }
+
+  <span class="hljs-keyword">if</span> (p &lt;= left) {
+    <span class="hljs-comment">// left is &gt;= pivot - swap it to the right end, shrink right boundary</span>
+    arrayView.<span class="hljs-title function_">set</span>(leftIndex, right);
+    arrayView.<span class="hljs-title function_">set</span>(rightIndex, left);
+    rightIndex--;
+  }
+}
+</code></pre><p>When <code>p &gt; left</code>, the left element belongs before the pivot, so we swap the pivot one position forward and the smaller element takes the pivot&#39;s old spot. When <code>p &lt;= left</code>, that element is too big to be on the left side, so we send it to the right end by swapping it with whatever is at <code>right</code>, and shrink the window by decrementing <code>rightIndex</code>.</p>
+<p>Once the loop finishes, the pivot sits at its correct sorted position, and we have two partitions - one on each side - that still need sorting. No temporary arrays were created. All swaps happened directly on the original array. The <code>ArrayView</code> class makes this ergonomic by letting us treat sub-ranges of the array as if they were standalone arrays, using an <code>offset</code> and <code>length</code> rather than copying data.</p>
+<h2>The Simplicity of Recursion</h2>
+<p>The most natural way to express this kind of divide-and-conquer is through recursion. Even quick sort can be written in just a few lines of code:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">quicksort</span>(<span class="hljs-params"><span class="hljs-attr">arr</span>: <span class="hljs-built_in">number</span>[], <span class="hljs-attr">lo</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">hi</span>: <span class="hljs-built_in">number</span></span>) {
+  <span class="hljs-keyword">if</span> (lo &gt;= hi) <span class="hljs-keyword">return</span>;
+
+  <span class="hljs-keyword">const</span> pivotIndex = <span class="hljs-title function_">partition</span>(arr, lo, hi);
+  <span class="hljs-title function_">quicksort</span>(arr, lo, pivotIndex - <span class="hljs-number">1</span>);
+  <span class="hljs-title function_">quicksort</span>(arr, pivotIndex + <span class="hljs-number">1</span>, hi);
+}
+</code></pre><p>Three lines. Beautifully simple. The recursive structure mirrors the problem itself - partition, then sort each half. You barely have to think about bookkeeping; the call stack keeps track of which sub-arrays still need processing. This elegance is exactly why recursion is usually the first approach taught for divide-and-conquer algorithms.</p>
+<h2>When Recursion Becomes the Problem</h2>
+<p>But here&#39;s the catch: every recursive call adds a frame to the call stack. For a well-balanced partition, the recursion depth is O(log n), which is fine for most practical arrays. But in the worst case - say the array is already sorted or nearly sorted and you always pick the first element as the pivot - the recursion depth becomes O(n). For an array with tens of millions of elements, that means tens of millions of stack frames.</p>
+<p>JavaScript engines have a finite call stack. Exceed that, and you get the dreaded:</p>
+<pre><code>RangeError: Maximum call stack size exceeded
+</code></pre><p>This isn&#39;t a theoretical concern. If you&#39;re sorting a large dataset that happens to be pre-sorted or nearly sorted, a naive recursive quicksort will crash your application.</p>
+<h2>Solving It in a Single Function Call with a Tracked Pivot Stack</h2>
+<p>Our implementation for the two pointers technique sidesteps this entirely by replacing the implicit call stack with an explicit one - the <code>pivots</code> array:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> tpStack&lt;T&gt;(<span class="hljs-attr">arr</span>: <span class="hljs-title class_">Array</span>&lt;T&gt;) {
+  <span class="hljs-keyword">const</span> pivots = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span>&lt;<span class="hljs-title class_">ArrayView</span>&lt;T&gt;&gt;();
+  pivots.<span class="hljs-title function_">push</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayView</span>(arr, <span class="hljs-number">0</span>, arr.<span class="hljs-property">length</span>));
+
+  <span class="hljs-keyword">do</span> {
+    <span class="hljs-keyword">const</span> arrayView = pivots.<span class="hljs-title function_">pop</span>()!;
+    <span class="hljs-comment">// ... partition logic ...</span>
+    pivots.<span class="hljs-title function_">push</span>(arrayView.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, pIndex));
+    pivots.<span class="hljs-title function_">push</span>(arrayView.<span class="hljs-title function_">slice</span>(pIndex, length));
+  } <span class="hljs-keyword">while</span> (pivots.<span class="hljs-property">length</span>);
+}
+</code></pre><p>Instead of recursing, the function maintains a stack of <code>ArrayView</code> objects, each representing a sub-array that still needs to be sorted. The <code>do...while</code> loop pops a sub-array, partitions it using the two-pointer technique, and pushes the resulting left and right partitions back onto the stack. The whole sort completes within a <strong>single function call</strong> - no recursion, no risk of blowing the call stack.</p>
+<p>The <code>ArrayView</code> class is the key enabler here. It holds a reference to the <strong>original</strong> array along with an <code>offset</code> and <code>length</code>, so &quot;slicing&quot; a sub-array is just creating a lightweight view object - no data is copied. This means the tracked pivot stack only stores small descriptor objects, not array copies, keeping memory overhead minimal even for massive arrays.</p>
+<p>The base cases are handled efficiently too: sub-arrays of length 1 or less are already sorted and get skipped, while sub-arrays of exactly length 2 just need a single comparison and at most one swap. This avoids unnecessary partitioning overhead for trivially small segments.</p>
+<p>The result is an in-place, iterative, stack-safe sorting algorithm that combines the best of both worlds: the logical clarity of divide-and-conquer with the robustness of an iterative approach. No extra arrays allocated for merging, no call stack limits to worry about - just one function call that sorts the array, no matter how large it is.</p>
+<h2>What the major JS Engines do</h2>
+<blockquote>
+<p>Algorithm Behind JavaScript Array.prototype.sort</p>
+</blockquote>
+<p>The ECMAScript specification does not mandate a specific sorting algorithm for Array.prototype.sort(). This means the actual algorithm depends on the JavaScript engine implementation. However, since ES2019, the spec requires the sort to be stable, ensuring that elements with equal sort keys retain their original order .</p>
+<p>Current Implementations in Major Engines:</p>
+<ul>
+<li>V8 (used in Chrome, Node.js, Deno): Uses TimSort since Chrome 70 (2018), which is a hybrid of merge sort and insertion sort, optimized for partially sorted data.</li>
+<li>SpiderMonkey (Firefox): Uses a stable merge sort.</li>
+<li>JavaScriptCore (Safari): Uses a stable sorting algorithm, historically merge sort or a variant.</li>
+</ul>
+<p>Why TimSort in V8? TimSort offers O(n log n) worst-case complexity and O(n) for nearly sorted data, making it efficient for real-world scenarios where data often has ordered sequences. It also guarantees stability, aligning with ES2019 requirements.</p>
+<h2>Benchmarking</h2>
+<p>I approach the benchmarking in two methods:</p>
+<ul>
+<li>Integrity test: to ensure that my implementation produces the same sorted output as the built-in <code>sort</code> method.</li>
+<li>Performance test: to compare the execution time of my implementation against the built-in <code>sort</code> method given the random array that is normally distributed.</li>
+</ul>
+<p>After validating that the outputs are identical, I run performance benchmarks on arrays in 30 runs and compare the average resource usage and execution time of both implementations.</p>
+<p>Here are the results of the benchmark:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>builtIn</th>
+<th>custom</th>
+<th>%</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Heap Used (MB)</td>
+<td>112</td>
+<td>59</td>
+<td>46</td>
+</tr>
+<tr>
+<td>Heap Total (MB)</td>
+<td>135</td>
+<td>84</td>
+<td>37</td>
+</tr>
+<tr>
+<td>Heap Usage (%)</td>
+<td>80</td>
+<td>66</td>
+<td>17</td>
+</tr>
+<tr>
+<td>RSS (MB)</td>
+<td>378</td>
+<td>371</td>
+<td>1</td>
+</tr>
+<tr>
+<td>CPU User Time (ms)</td>
+<td>524</td>
+<td>173</td>
+<td>66</td>
+</tr>
+<tr>
+<td>CPU System Time (ms)</td>
+<td>7</td>
+<td>5</td>
+<td>26</td>
+</tr>
+<tr>
+<td>Elapsed Time (ms)</td>
+<td>543</td>
+<td>189</td>
+<td>65</td>
+</tr>
+</tbody></table>
+<p>The custom implementation cuts heap usage nearly in half, which is consistent with its in-place partitioning and lack of temporary array allocations. User CPU time drops by roughly two thirds, suggesting the built-in sort is doing more work per element for this distribution and data size. System time is low for both, so the difference is dominated by user-space computation rather than OS overhead. </p>
+<h2>Conclusion</h2>
+<p>Overall, the custom implementation demonstrates significant performance improvements in both memory usage and execution time compared to the built-in <code>sort</code>, especially for large arrays with a normal distribution. This validates the efficiency of the two pointers technique and in-place partitioning approach.</p>
+<p>However, given that in real world applications, the built-in <code>sort</code> is already optimized for daily use cases, the performance benefits of a custom implementation may vary based on the specific use case and data characteristics. For small arrays or already sorted data, the built-in <code>sort</code> may perform better due to lower overhead.</p>
+<p>All in all, this has been a great exploration on how two pointers technique can be a tool to optimize sorting algorithms and how it can be implemented in a way that avoids recursion and minimizes memory usage. Maybe I should sample actual data from real applications and benchmark against that to see how it performs in practice!</p>
+</div>
+</div>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+<style>
+  .hljs {
+    border-radius: 4px;
+    background-color: #afacac;
+  }
+</style>

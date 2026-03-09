@@ -1,0 +1,6 @@
+{
+  "title": "MAFA - Make Arranging (in JS) Fast Again",
+  "description": "2026 Mar 07 &bull; 7min read time",
+  "summary": "An in-place, two-pointer quicksort variant that replaces recursion with an explicit pivot stack to reduce allocations and avoid call stack limits, with benchmark comparisons against built-in sort.",
+  "keywords": "quicksort, two pointers, in-place sorting, pivot stack, iterative algorithm, JavaScript, performance, memory usage, benchmarking"
+}
