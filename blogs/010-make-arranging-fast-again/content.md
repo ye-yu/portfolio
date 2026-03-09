@@ -1,4 +1,4 @@
-A few years back, I learnt the Two Pointers Technique to solve many array traversal problems. It was such a revelation and an inspiration to me to write even more complicated code and brag about it in a blog post like this, except that I didn't actually brag about it because I was too lazy to write a blog post. See the final code snippet in the gist here: [quickSortStack.ts])(https://gist.github.com/ye-yu/3f5d3bac5f1af9a08935d18592ed1912)
+A few years back, I learnt the Two Pointers Technique to solve many array traversal problems. It was such a revelation and an inspiration to me to write even more complicated code and brag about it in a blog post like this, except that I didn't actually brag about it because I was too lazy to write a blog post. See the final code snippet in the gist here: [quickSortStack.ts](https://gist.github.com/ye-yu/3f5d3bac5f1af9a08935d18592ed1912)
 
 > MAFA: because MSFA (make sorting fast again) does not make a good acronym.
 
@@ -115,7 +115,6 @@ The result is an in-place, iterative, stack-safe sorting algorithm that combines
 The ECMAScript specification does not mandate a specific sorting algorithm for Array.prototype.sort(). This means the actual algorithm depends on the JavaScript engine implementation. However, since ES2019, the spec requires the sort to be stable, ensuring that elements with equal sort keys retain their original order .
 
 Current Implementations in Major Engines:
-
 - V8 (used in Chrome, Node.js, Deno): Uses TimSort since Chrome 70 (2018), which is a hybrid of merge sort and insertion sort, optimized for partially sorted data.
 - SpiderMonkey (Firefox): Uses a stable merge sort.
 - JavaScriptCore (Safari): Uses a stable sorting algorithm, historically merge sort or a variant.
